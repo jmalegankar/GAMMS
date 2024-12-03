@@ -18,7 +18,7 @@ class IStore(ABC):
     def delete(self) -> None:
         pass
 
-class IMemoryStore(ABC):
+class IMemoryEngine(ABC):
     @abstractmethod
     def create_store(self, store_type: Enum, name: str, path: IPathLike) -> IStore:
         pass
