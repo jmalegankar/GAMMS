@@ -1,12 +1,14 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from enum import Enum
 
 class ITask(ABC):
-    @abstractproperty
+    @property
+    @abstractmethod
     def id(self) -> str:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def status(self) -> Enum:
         pass
 
