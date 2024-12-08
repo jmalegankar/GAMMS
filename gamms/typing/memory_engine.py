@@ -5,7 +5,15 @@ from enum import Enum
 class IPathLike(ABC):
     pass
 
+class IStoreType(Enum):
+    FILESYSTEM = 1
+    REMOTE = 2
+    DATABASE = 3
+
 class IStore(ABC):
+    def __init__(self):
+        super().__init__()
+        
     @abstractmethod
     def save(self, obj: Any) -> None:
         pass
