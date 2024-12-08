@@ -11,8 +11,10 @@ class IStoreType(Enum):
     DATABASE = 3
 
 class IStore(ABC):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name: str, store_type: IStoreType, path: IPathLike):
+        self.name = name 
+        self.store_type = store_type
+        self.path = path
         
     @abstractmethod
     def save(self, obj: Any) -> None:
