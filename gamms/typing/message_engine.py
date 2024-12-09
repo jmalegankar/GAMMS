@@ -7,7 +7,7 @@ class IMessageEngine(ABC):
         pass
 
     @abstractmethod
-    def create_publisher(
+    def publish(
         self,
         tensor: Any,
         channel_name: Optional[str],
@@ -16,7 +16,7 @@ class IMessageEngine(ABC):
         pass
 
     @abstractmethod
-    def create_subscriber(
+    def subscribe(
         self,
         channel_name: str,
         ) -> None:

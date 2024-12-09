@@ -6,7 +6,7 @@ class IPathLike(ABC):
     pass
 
 class IStoreType(Enum):
-    FILESYSTEM = 1
+    FILE = 1
     REMOTE = 2
     DATABASE = 3
 
