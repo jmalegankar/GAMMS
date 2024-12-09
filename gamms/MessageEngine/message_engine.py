@@ -78,6 +78,7 @@ class MessageEngine(IMessageEngine):
     
     def generate_channel_name(self):
         pass
+    
     def list_active_channels(self):
         if not self.redis_client:
             raise ConnectionError("Redis is not connected. Call `connect` first.")
