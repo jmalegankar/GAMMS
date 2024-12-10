@@ -9,7 +9,7 @@ class IMessageEngine(ABC):
     @abstractmethod
     def publish(
         self,
-        tensor: Any,
+        message: Any,
         channel_name: Optional[str],
         ttl: int,
         ) -> None:
@@ -19,6 +19,7 @@ class IMessageEngine(ABC):
     def subscribe(
         self,
         channel_name: str,
+        callback: callable,
         ) -> None:
         pass
 

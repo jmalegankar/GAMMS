@@ -23,8 +23,7 @@ class AgentChannelManager:
         self.redis_pubsub.publish(channel, message)
         print(f"Message sent to channel {channel}: {message}")
 
-
-class MessageEngine(IMessageEngine):
+class RedisManager:
     def __init__(self, host: str = "127.0.0.1", port: int = 6379):
         self.host = host
         self.port = port
@@ -80,11 +79,21 @@ class MessageEngine(IMessageEngine):
         pass
     
     def list_active_channels(self):
-        if not self.redis_client:
-            raise ConnectionError("Redis is not connected. Call `connect` first.")
-        return self.redis_client.pubsub_channels()
-    
+        pass
 
+class MessageEngine(IMessageEngine):
+    def __init__(self):
+        self.redis_manager = RedisManager()
+        self.redis_manager.connect_redis()
+    
+    def publish(self, message, channel_name, ttl):
+        self.redis_manager.publish(channel_name, message)
+
+    def subscribe(self, channel_name, callback):
+        self.redis_manager.subscribe(channel_name, callback)
+    
+    def generate_channel_name(self):
+        self.redis_manager.generate_channel_name()
 
 if __name__ == "__main__":
     redis_pubsub = MessageEngine()
