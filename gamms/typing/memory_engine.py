@@ -5,11 +5,6 @@ from enum import Enum
 class IPathLike(ABC):
     pass
 
-class IStoreType(Enum):
-    FILE = 1
-    REMOTE = 2
-    DATABASE = 3
-
 class IStore(ABC):
     def __init__(self, name: str, store_type: IStoreType, path: IPathLike):
         self.name = name 
