@@ -1,12 +1,12 @@
 from typing import Callable
 from abc import ABC, abstractmethod
 
-class VisualizationEngine(ABC):
+class IVisualizationEngine(ABC):
     """
     The abstract interface for the visualization engine.
     """
 
-    tick_callback: Callable[[float]]
+    tick_callback: Callable[[float], None]
     """
     This will be called every tick of the game loop. You can use it for tick callback for other systems.
 
@@ -19,10 +19,10 @@ class VisualizationEngine(ABC):
     This will be set to True if the user tries to quit the game.
     """
 
-    def __init__(self, tick_callback: Callable[[float]]):
+    def __init__(self, tick_callback: Callable[[float], None]):
         super().__init__()
 
-        self.tick_callback: Callable[[float]] = tick_callback
+        self.tick_callback: Callable[[float], None] = tick_callback
         self.will_quit: bool = False
 
     def run_game_loop(self):
