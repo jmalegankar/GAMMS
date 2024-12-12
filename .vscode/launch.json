@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Visualization Engine Test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/gamms/VisualizationEngine/visualization_engine.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        }
+    ]
+}
