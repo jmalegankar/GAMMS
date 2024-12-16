@@ -49,6 +49,22 @@ class Camera:
         """
         return self._size / self.aspect_ratio
     
+    @property
+    def left(self) -> float:
+        return self.x - self.size
+    
+    @property
+    def right(self) -> float:
+        return self.x + self.size
+    
+    @property
+    def top(self) -> float:
+        return self.y + self.size_y
+    
+    @property
+    def bottom(self) -> float:
+        return self.y - self.size_y
+    
     @size.setter
     def size(self, value: float):
         value = pygame.math.clamp(value, 2, 350)
@@ -78,16 +94,16 @@ class Camera:
         """
         Transforms a world coordinate to a screen coordinate.
         """
-        screen_x = (x + self.size) / (2 * self.size) * self.visualization_engine.width
-        screen_y = (-y + self.size_y) / (2 * self.size_y) * self.visualization_engine.height
+        screen_x = (x - self.x + self.size) / (2 * self.size) * self.visualization_engine.width
+        screen_y = (-y + self.y + self.size_y) / (2 * self.size_y) * self.visualization_engine.height
         return screen_x, screen_y
     
     def screen_to_world(self, x: float, y: float) -> tuple[float, float]:
         """
         Transforms a screen coordinate to a world coordinate.
         """
-        world_x = x / self.visualization_engine.width * 2 * self.size - self.size
-        world_y = -y / self.visualization_engine.height * 2 * self.size_y + self.size_y
+        world_x = x / self.visualization_engine.width * 2 * self.size - self.size + self.x
+        world_y = -y / self.visualization_engine.height * 2 * self.size_y + self.size_y + self.y
         return world_x, world_y
     
     def viewport_to_screen(self, x: float, y: float) -> tuple[float, float]:

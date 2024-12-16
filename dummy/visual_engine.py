@@ -35,7 +35,7 @@ class VisualizationEngine(IVisualizationEngine):
     The scene camera.
     """
 
-    def __init__(self, tick_callback, graph_visual, agent_visual, width=1980, height=1080):
+    def __init__(self, tick_callback, graph_visual, agent_visual, width=1200, height=720):
         super().__init__(tick_callback)
 
         pygame.init()
@@ -51,47 +51,49 @@ class VisualizationEngine(IVisualizationEngine):
         self.graph_visual.setCamera(self.camera)
     
     def handle_input(self):
+        move_speed = 0.01
+        world_move_speed = move_speed * self.camera.size
         for event in pygame.event.get():
             pressed_keys = pygame.key.get_pressed()
             # Multi key Event
-            if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_w]:
-                self.camera.x += 1
-                self.camera.y += -1
-                return
-            if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_s]:
-                self.camera.x += 1
-                self.camera.y += 1
-                return
-            if pressed_keys[pygame.K_s] and pressed_keys[pygame.K_d]:
-                self.camera.x += -1
-                self.camera.y += 1
-                return
-            if pressed_keys[pygame.K_d] and pressed_keys[pygame.K_w]:
-                self.camera.x += -1
-                self.camera.y += -1
-                return
-            if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_d]:
-                return
-            if pressed_keys[pygame.K_w] and pressed_keys[pygame.K_s]:
-                return
+            # if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_w]:
+            #     self.camera.x += 1
+            #     self.camera.y += -1
+            #     return
+            # if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_s]:
+            #     self.camera.x += 1
+            #     self.camera.y += 1
+            #     return
+            # if pressed_keys[pygame.K_s] and pressed_keys[pygame.K_d]:
+            #     self.camera.x += -1
+            #     self.camera.y += 1
+            #     return
+            # if pressed_keys[pygame.K_d] and pressed_keys[pygame.K_w]:
+            #     self.camera.x += -1
+            #     self.camera.y += -1
+            #     return
+            # if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_d]:
+            #     return
+            # if pressed_keys[pygame.K_w] and pressed_keys[pygame.K_s]:
+            #     return
             
             # Single Input Event
             if pressed_keys[pygame.K_a]:
-                self.camera.x += 1
-                self.camera.y += 0
-                return
+                self.camera.x -= world_move_speed
+                # self.camera.y += 0
+                # return
             if pressed_keys[pygame.K_s]:
-                self.camera.x += 0
-                self.camera.y += 1
-                return
+                # self.camera.x += 0
+                self.camera.y -= world_move_speed
+                # return
             if pressed_keys[pygame.K_d]:
-                self.camera.x += -1
-                self.camera.y += 0
-                return
+                self.camera.x += world_move_speed
+                # self.camera.y += 0
+                # return
             if pressed_keys[pygame.K_w]:
-                self.camera.x += 0
-                self.camera.y += -1
-                return
+                # self.camera.x += 0
+                self.camera.y += world_move_speed
+                # return
             if event.type == pygame.MOUSEWHEEL:
                 if event.y > 0:
                     self.camera.size /= 1.05
@@ -117,13 +119,6 @@ class VisualizationEngine(IVisualizationEngine):
         self.screen.fill(Color.White)
         self._draw_grid()
 
-        top = 10
-        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
-
         # Draw the graph
         self.graph_visual.draw_graph(self.screen)
 
@@ -139,6 +134,14 @@ class VisualizationEngine(IVisualizationEngine):
             self.graph_visual.y_min,
             self.graph_visual.y_max
         )
+
+        # Draw the instructions
+        top = 10
+        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
+        top += size_y + 10
+        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
+        top += size_y + 10
+        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
 
     def cleanup(self):
         pygame.quit()
@@ -210,10 +213,10 @@ class VisualizationEngine(IVisualizationEngine):
         """
         Draws the grid on the screen.
         """
-        x_min = 0 - self.camera.size
-        x_max = 0 + self.camera.size
-        y_min = 0 - self.camera.size_y
-        y_max = 0 + self.camera.size_y
+        x_min = self.camera.left
+        x_max = self.camera.right
+        y_min = self.camera.bottom
+        y_max = self.camera.top
         x_length = x_max - x_min
         lv = int(math.log2(x_length / 50))
         spacing = 5 if lv < 1 else int(25 * lv)
