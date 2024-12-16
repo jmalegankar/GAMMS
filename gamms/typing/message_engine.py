@@ -7,18 +7,19 @@ class IMessageEngine(ABC):
         pass
 
     @abstractmethod
-    def create_publisher(
+    def publish(
         self,
-        tensor: Any,
+        message: Any,
         channel_name: Optional[str],
         ttl: int,
         ) -> None:
         pass
 
     @abstractmethod
-    def create_subscriber(
+    def subscribe(
         self,
         channel_name: str,
+        callback: callable,
         ) -> None:
         pass
 
