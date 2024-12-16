@@ -55,16 +55,20 @@ class VisualizationEngine(IVisualizationEngine):
             pressed_keys = pygame.key.get_pressed()
             # Multi key Event
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_w]:
-                self.graph_visual.MoveGraphPosition((-10, -10))
+                self.camera.x += 1
+                self.camera.y += -1
                 return
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_s]:
-                self.graph_visual.MoveGraphPosition((-10, 10))
+                self.camera.x += 1
+                self.camera.y += 1
                 return
             if pressed_keys[pygame.K_s] and pressed_keys[pygame.K_d]:
-                self.graph_visual.MoveGraphPosition((10, 10))
+                self.camera.x += -1
+                self.camera.y += 1
                 return
             if pressed_keys[pygame.K_d] and pressed_keys[pygame.K_w]:
-                self.graph_visual.MoveGraphPosition((10, -10))
+                self.camera.x += -1
+                self.camera.y += -1
                 return
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_d]:
                 return
@@ -73,16 +77,20 @@ class VisualizationEngine(IVisualizationEngine):
             
             # Single Input Event
             if pressed_keys[pygame.K_a]:
-                self.graph_visual.MoveGraphPosition((-10, 0))
+                self.camera.x += 1
+                self.camera.y += 0
                 return
             if pressed_keys[pygame.K_s]:
-                self.graph_visual.MoveGraphPosition((0, 10))
+                self.camera.x += 0
+                self.camera.y += 1
                 return
             if pressed_keys[pygame.K_d]:
-                self.graph_visual.MoveGraphPosition((10, 0))
+                self.camera.x += -1
+                self.camera.y += 0
                 return
             if pressed_keys[pygame.K_w]:
-                self.graph_visual.MoveGraphPosition((0, -10))
+                self.camera.x += 0
+                self.camera.y += -1
                 return
             if event.type == pygame.MOUSEWHEEL:
                 if event.y > 0:
@@ -202,10 +210,10 @@ class VisualizationEngine(IVisualizationEngine):
         """
         Draws the grid on the screen.
         """
-        x_min = self.camera.x - self.camera.size
-        x_max = self.camera.x + self.camera.size
-        y_min = self.camera.y - self.camera.size_y
-        y_max = self.camera.y + self.camera.size_y
+        x_min = 0 - self.camera.size
+        x_max = 0 + self.camera.size
+        y_min = 0 - self.camera.size_y
+        y_max = 0 + self.camera.size_y
         x_length = x_max - x_min
         lv = int(math.log2(x_length / 50))
         spacing = 5 if lv < 1 else int(25 * lv)

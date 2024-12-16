@@ -36,8 +36,8 @@ class GraphVisual:
         screen_scale = 1000 
 
         map_position = (screen_scale * (position[0] - graph_center[0]),screen_scale * (position[1] - graph_center[1]))
-        map_position = self.camera.world_to_screen(map_position[0], map_position[1])
-        map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
+        map_position = self.camera.world_to_screen(map_position[0] + self.camera.x, map_position[1] + self.camera.y)
+        #map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
         return map_position
 
     def draw_node(self, screen, node):
