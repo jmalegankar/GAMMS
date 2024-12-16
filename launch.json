@@ -1,0 +1,16 @@
+{
+    "configurations": [
+
+        {
+            "name": "Visualization Engine Test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/dummy/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        }
+    ]
+}
