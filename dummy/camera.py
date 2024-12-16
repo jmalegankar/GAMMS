@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+import pygame
+
 if TYPE_CHECKING:
     from visualization_engine import VisualizationEngine
 
@@ -7,7 +9,7 @@ class Camera:
     def __init__(self, visualization_engine: "VisualizationEngine", x=0, y=0, size=5):
         self._x = x
         self._y = y
-        self._size = size
+        self._size = float(size)
 
         self._visualization_engine = visualization_engine
 
@@ -28,7 +30,7 @@ class Camera:
         self._y = value
 
     @property
-    def size(self):
+    def size(self) -> float:
         """
         The orthographic size of the camera represents half the width of the camera view.
 
@@ -38,7 +40,7 @@ class Camera:
         return self._size
     
     @property
-    def size_y(self):
+    def size_y(self) -> float:
         """
         The orthographic size of the camera represents half the height of the camera view.
 
@@ -49,6 +51,7 @@ class Camera:
     
     @size.setter
     def size(self, value: float):
+        value = pygame.math.clamp(value, 2, 350)
         self._size = value
 
     @property

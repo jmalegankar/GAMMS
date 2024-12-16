@@ -2,7 +2,6 @@ from gamms.typing import IVisualizationEngine
 from constants import *
 from camera import Camera
 import pygame
-import math
 
 class VisualizationEngine(IVisualizationEngine):
     width: int
@@ -54,11 +53,6 @@ class VisualizationEngine(IVisualizationEngine):
                 self.width = event.w
                 self.height = event.h
                 self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
-            elif event.type == pygame.MOUSEWHEEL:
-                if event.y > 0:
-                    self.camera.size /= 1.05
-                else:
-                    self.camera.size *= 1.05
 
     def handle_tick(self):
         self.clock.tick()
@@ -67,12 +61,9 @@ class VisualizationEngine(IVisualizationEngine):
         self.screen.fill(Color.White)
         self._draw_grid()
 
-        top = 10
-        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
+        size_x, size_y = self.render_text("Some instructions here", 10, 10, Space.Screen)
+        size_y += 10
+        self.render_text("Current turn: Red", 10, 10 + size_y, Space.Screen)
 
         pygame.display.flip()
 
@@ -150,19 +141,12 @@ class VisualizationEngine(IVisualizationEngine):
         x_max = self.camera.x + self.camera.size
         y_min = self.camera.y - self.camera.size_y
         y_max = self.camera.y + self.camera.size_y
-        x_length = x_max - x_min
-        lv = int(math.log2(x_length / 50))
-        spacing = 5 if lv < 1 else int(25 * lv)
-        step = 1 if lv < 1 else int(lv * 5)
-        x_begin = int((x_min // spacing ) * spacing)
-        x_end = int((x_max // spacing + 1) * spacing)
-        y_begin = int((y_min // spacing) * spacing)
-        y_end = int((y_max // spacing + 1) * spacing)
-        for x in range(x_begin, x_end, step):
-            self.render_line(x, y_min, x, y_max, Color.LightGray, 3 if x % spacing == 0 else 1, False)
+        step = 1
+        for x in range(int(x_min), int(x_max) + 1, step):
+            self.render_line(x, y_min, x, y_max, Color.LightGray, 3 if x % 5 == 0 else 1, False)
 
-        for y in range(y_begin, y_end, step):
-            self.render_line(x_min, y, x_max, y, Color.LightGray, 3 if y % spacing == 0 else 1, False)
+        for y in range(int(y_min), int(y_max) + 1, step):
+            self.render_line(x_min, y, x_max, y, Color.LightGray, 3 if y % 5 == 0 else 1, False)
 
 
 if __name__ == "__main__":

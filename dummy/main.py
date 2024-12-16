@@ -18,5 +18,5 @@ if __name__ == "__main__":
     agent_visual = AgentVisual(agent_engine)
 
     # Initialize and run the visualization engine
-    visualization = VisualizationEngine(graph_visual, agent_visual)
-    visualization.run()
+    visualization = VisualizationEngine(None, graph_visual, agent_visual)
+    visualization.run_game_loop()

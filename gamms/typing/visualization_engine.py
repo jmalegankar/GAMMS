@@ -1,4 +1,5 @@
 from typing import Callable
+import pygame
 from abc import ABC, abstractmethod
 
 class IVisualizationEngine(ABC):
@@ -24,15 +25,19 @@ class IVisualizationEngine(ABC):
 
         self.tick_callback: Callable[[float], None] = tick_callback
         self.will_quit: bool = False
+        
 
     def run_game_loop(self):
         """
         This is a basic game loop, can override in implementation.
         """
+        clock = pygame.time.Clock()
         while not self.will_quit:
             self.handle_input()
             self.handle_tick()
             self.handle_render()
+            pygame.display.flip()
+            delta_time = clock.tick(30)
 
         self.cleanup()
 

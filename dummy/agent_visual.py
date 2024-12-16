@@ -22,9 +22,7 @@ class AgentVisual:
         for agent_state in self.agent_engine.get_all_states():
             position = agent_state["position"]
             color = agent_state.get("color", (255, 0, 0))  # Default color is red if not provided
-            scaled_x = scale_func(position[0], x_min, x_max, 50, screen_width - 50)
-            scaled_y = scale_func(position[1], y_min, y_max, 50, screen_height - 50)
-
+            (scaled_x, scaled_y) = scale_func(position)
             # Draw each agent as a triangle at its current position
             size = 8  # Triangle size
             angle = math.radians(45)
