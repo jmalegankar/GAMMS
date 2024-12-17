@@ -1,13 +1,6 @@
-from graph_engine import Node
-from typing import Enum
+from gamms.typing.sensor_engine import SensorType, ISensor, ISensorEngine
 
-
-class SensorType(Enum):
-    NEIGHBOR = 1
-    MAP = 2
-    AGENT = 3
-
-class NeighborSensor():
+class NeighborSensor(ISensor):
     def __init__(self, id, nodes, edges):
         self.id = id
         self.nodes = nodes
@@ -26,7 +19,7 @@ class NeighborSensor():
     def update():
         return 
 
-class MapSensor():
+class MapSensor(ISensor):
     def __init__(self, id, nodes, edges):
         self.id = id
         self.nodes = nodes
@@ -39,7 +32,7 @@ class MapSensor():
         return
     
 #return pos, node_id of all agents
-class AgentSensor():
+class AgentSensor(ISensor):
     def __init__(self, name, nodes, edges):
         self.name = name
         self.nodes = nodes
@@ -56,23 +49,23 @@ class AgentSensor():
     def update():
         return 
     
-class SensorEngine():
-    def __init__(self, graph):
-        self.graph = graph  
+class SensorEngine(ISensorEngine):
+    def __init__(self, ctx):
+        self.ctx = ctx  
         self.sensors = {}
-
-    def create_sensor(self, id, type: SensorType):
+    def create_sensor(self, id, type: SensorType, **kwargs):
         if type == SensorType.NEIGHBOR:
-            self.sensors[id] = NeighborSensor(id, self.graph.nodes, self.graph.edges)
+            sensor = NeighborSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
         elif type == SensorType.MAP:
-            self.sensors[id] = MapSensor(id, self.graph.nodes, self.graph.edges)
+            sensor = MapSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
         elif type == SensorType.AGENT:
-            self.sensors[id] = AgentSensor()
+            sensor = AgentSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
         else:
             raise ValueError("Invalid sensor type")
+        self.sensors[id] = sensor
+        return sensor
     
-
-        
-
+    def get_sensor(self, id):
+        return self.sensors[id]
 
 
