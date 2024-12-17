@@ -14,7 +14,6 @@ class IAgent(ABC):
     def set_state(self, state):
         pass
 
-
 class IAgentEngine(ABC):
     @abstractmethod
     def create_iter(self):
