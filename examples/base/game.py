@@ -13,7 +13,7 @@ import red_strategy
 ctx = gamms.create_context(vis_engine=vis_engine)
 
 # Load the graph
-G = ctx.graph.load(graph_path)
+ctx.graph.load(graph_path)
 
 
 # Create the sensors
@@ -84,8 +84,8 @@ while not ctx.is_terminated():
             state = agent.get_state()
             ctx.human_input(state)
             agent.set_state()
-    valid_step(ctx)
-    agent_reset(ctx)
+    #valid_step(ctx)
+    #agent_reset(ctx)
     break
     # ctx.visualize.update()
     # ctx.save_frame()
