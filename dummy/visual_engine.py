@@ -1,6 +1,9 @@
 from gamms.typing import IVisualizationEngine
 from constants import *
 from camera import Camera
+from agent_visual import AgentVisual
+from graph_visual import GraphVisual
+from agent_engine import Agent
 import pygame
 import math
 
@@ -41,14 +44,16 @@ class VisualizationEngine(IVisualizationEngine):
         pygame.init()
         self.width = width
         self.height = height
-        self.graph_visual = graph_visual
-        self.agent_visual = agent_visual
+        self.graph_visual: GraphVisual = graph_visual
+        self.agent_visual: AgentVisual = agent_visual
         self.zoom = 1.0
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
         self.default_font = pygame.font.Font(None, 36)
         self.camera = Camera(self, 0, 0, 15)
         self.graph_visual.setCamera(self.camera)
+        self.game_state = GameState.Simulating
+        self.simulation_timer = 5.0
     
     def handle_input(self):
         move_speed = 0.01
@@ -112,8 +117,32 @@ class VisualizationEngine(IVisualizationEngine):
                 self.height = event.h
                 self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
 
+            if self.game_state == GameState.WaitingForInput:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        position = event.pos
+                        world_position = self.camera.screen_to_world(position[0], position[1])
+                        node = self.graph_visual.get_closest_node(world_position[0], world_position[1])
+                        if node is not None:
+                            node_world_position = self.graph_visual.scale_position_to_world((node.x, node.y))
+                            # node_screen_position = self.camera.world_to_screen(node_world_position[0], node_world_position[1])
+                            node_screen_position = self.graph_visual.ScalePositionToScreen((node.x, node.y))
+                            distance = math.dist(position, node_screen_position)
+                            if distance < 6:
+                                print(f"Clicked on node {node.id}")
+                                self.game_state = GameState.Simulating
+
     def handle_tick(self):
         self.clock.tick()
+
+        if self.game_state == GameState.Simulating:
+            self.agent_visual.move_agents()  # Step all agents
+            self.simulation_timer -= self.clock.get_time() / 1000
+            if self.simulation_timer <= 0:
+                self.game_state = GameState.WaitingForInput
+                self.simulation_timer = 5.0
+        elif self.game_state == GameState.WaitingForInput:
+            pass
 
     def handle_render(self):
         self.screen.fill(Color.White)
@@ -122,8 +151,7 @@ class VisualizationEngine(IVisualizationEngine):
         # Draw the graph
         self.graph_visual.draw_graph(self.screen)
 
-        # Update agent positions and draw them
-        self.agent_visual.move_agents()  # Step all agents
+        # Draw agents
         self.agent_visual.draw_agents(
             self.screen,
             self.graph_visual.ScalePositionToScreen,
@@ -136,12 +164,22 @@ class VisualizationEngine(IVisualizationEngine):
         )
 
         # Draw the instructions
-        top = 10
-        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
+        if self.game_state == GameState.Simulating:
+            top = 10
+            size_x, size_y = self.render_text("Simulating...", 10, top, Space.Screen)
+            top += size_y + 10
+            size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
+            top += size_y + 10
+            size_x, size_y = self.render_text(f"Simulation time: {self.simulation_timer:.2f}", 10, top, Space.Screen)
+            top += size_y + 10
+            size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
+        if self.game_state == GameState.WaitingForInput:
+            top = 10
+            size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
+            top += size_y + 10
+            size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
+            top += size_y + 10
+            size_x, size_y = self.render_text("Current turn: Blue", 10, top, Space.Screen)
 
     def cleanup(self):
         pygame.quit()

@@ -19,3 +19,8 @@ class Space:
     World = 0
     Screen = 1
     Viewport = 2
+
+
+class GameState:
+    Simulating = 0
+    WaitingForInput = 1

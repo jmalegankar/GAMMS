@@ -1,4 +1,6 @@
 import pygame
+import math
+from graph_engine import Graph, Node
 
 
 class GraphVisual:
@@ -39,6 +41,17 @@ class GraphVisual:
         map_position = self.camera.world_to_screen(map_position[0], map_position[1])
         #map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
         return map_position
+    
+    def scale_position_to_world(self, position: tuple[float, float]) -> tuple[float, float]:
+        """Scale a coordinate value to fit within the screen."""
+        current_size = pygame.display.get_window_size()
+
+        graph_center = self.GraphCenter()
+        # Graph comes in the form of KM. Need to convert the KM to scale for M. One unit = 1m
+        screen_scale = 1000 
+
+        world_position = (screen_scale * (position[0] - graph_center[0]),screen_scale * (position[1] - graph_center[1]))
+        return world_position
 
     def draw_node(self, screen, node):
         """Draw a node as a circle with a light greenish color."""
@@ -79,3 +92,21 @@ class GraphVisual:
 
         for node in self.graph.nodes.values():
             self.draw_node(screen, node)
+
+    def get_closest_node(self, x, y) -> Node:
+        """Get the closest node to a given position (x, y)."""
+        closest_node = None
+        closest_distance = float("inf")
+        for node in self.graph.nodes.values():
+            position = (node.x, node.y)
+            (x_world, y_world) = self.scale_position_to_world(position)
+            # graph_center = self.GraphCenter()
+            # # Graph comes in the form of KM. Need to convert the KM to scale for M. One unit = 1m
+            # screen_scale = 1000 
+            # map_position = (screen_scale * (position[0] - graph_center[0]),screen_scale * (position[1] - graph_center[1]))
+            # x_world, y_world 
+            distance = math.hypot(x_world - x, y_world - y)
+            if distance < closest_distance:
+                closest_distance = distance
+                closest_node = node
+        return closest_node

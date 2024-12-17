@@ -122,7 +122,7 @@ class AgentEngine:
     def __init__(self, graph, num_red_agents=5, num_blue_agents=5):
         """Initialize the engine with two sets of agents: red and blue."""
         self.graph = graph
-        self.agents = []
+        self.agents: list[Agent] = []
 
         # Create red agents, all starting at the same node
         node_ids = list(graph.nodes.keys())  # All agents start at the same node
