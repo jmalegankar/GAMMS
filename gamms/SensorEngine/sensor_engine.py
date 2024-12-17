@@ -1,10 +1,12 @@
 from gamms.typing.sensor_engine import SensorType, ISensor, ISensorEngine
 
 class NeighborSensor(ISensor):
-    def __init__(self, id, nodes, edges):
+    def __init__(self, id, type, nodes, edges):
         self.id = id
+        self.type = type
         self.nodes = nodes
         self.edges = edges
+        self.data = []
     
     #sense
     def sense(self, node_id):
@@ -14,39 +16,41 @@ class NeighborSensor(ISensor):
                 nearest_neighbors.add(edge.target)
             elif edge.target == node_id:
                 nearest_neighbors.add(edge.source)
-        return list(nearest_neighbors)
+        self.data = list(nearest_neighbors)
     
-    def update():
+    def update(self, node_id):
         return 
 
 class MapSensor(ISensor):
-    def __init__(self, id, nodes, edges):
+    def __init__(self, id, type, nodes, edges):
         self.id = id
+        self.type = type
         self.nodes = nodes
         self.edges = edges
+        self.data = ((), ())
     
-    def sense(self):
-        return self.nodes, self.edges
+    def sense(self, node_id):
+        self.data = (self.nodes, self.edges)
     
-    def update():
+    def update(self, node_id):
         return
     
 #return pos, node_id of all agents
 class AgentSensor(ISensor):
-    def __init__(self, name, nodes, edges):
-        self.name = name
-        self.nodes = nodes
-        self.edges = edges
+    def __init__(self, id, type, agents):
+        self.id = id
+        self.type = type
+        self.agents = agents
+        self.data = []
     
     #sense
-    def sense(self, team):
-        team_nodes = set()
-        for node in self.nodes.values():
-            if node.team == team:
-                team_nodes.add(node)
-        return list(team_nodes)
+    def sense(self, node_id):
+        agent_data = []
+        for agent in self.agents:
+            agent_data.append((agent.name, agent.current_node_id))
+        self.data = agent_data
     
-    def update():
+    def update(self, node_id):
         return 
     
 class SensorEngine(ISensorEngine):
@@ -55,11 +59,11 @@ class SensorEngine(ISensorEngine):
         self.sensors = {}
     def create_sensor(self, id, type: SensorType, **kwargs):
         if type == SensorType.NEIGHBOR:
-            sensor = NeighborSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
+            sensor = NeighborSensor(id, type, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
         elif type == SensorType.MAP:
-            sensor = MapSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
+            sensor = MapSensor(id, type, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
         elif type == SensorType.AGENT:
-            sensor = AgentSensor(id, self.ctx.graph_engine.graph.nodes, self.ctx.graph_engine.graph.edges)
+            sensor = AgentSensor(id, type, self.ctx.agent_engine.agents)
         else:
             raise ValueError("Invalid sensor type")
         self.sensors[id] = sensor

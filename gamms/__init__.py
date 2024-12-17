@@ -1,6 +1,6 @@
-import gamms.AgentEngine as _agent_engine
-import gamms.SensorEngine as _sensor_engine
-import gamms.GraphEngine as _graph_engine
+import gamms.AgentEngine.agent_engine as _agent_engine
+import gamms.SensorEngine.sensor_engine as _sensor_engine
+import gamms.GraphEngine.graph_engine as _graph_engine
 import gamms.VisualizationEngine as _visual_engine
 from gamms.context import Context
 

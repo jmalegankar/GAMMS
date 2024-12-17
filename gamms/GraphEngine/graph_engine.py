@@ -17,11 +17,11 @@ class Graph(IGraph):
     def add_node(self, node_data: Dict[str, Any]) -> None:
         node_id = node_data['id']
         if node_id in self.nodes:
-            print(f"Node {node_id} already exists.")
+            #print(f"Node {node_id} already exists.")
             return
         node = Node(id=node_id, x=node_data['x'], y=node_data['y'])
         self.nodes[node_id] = node
-        # print(f"Added node: {node}")
+        #print(f"Added node: {node}")
     
     def add_edge(self, edge_data: Dict[str, Any]) -> None:
         id_counter = 0
@@ -29,7 +29,7 @@ class Graph(IGraph):
         target = edge_data['target']
         key = f"{source}-{target}"
         if key in self.edges:
-            # print(f"Edge {key} already exists.")
+            #print(f"Edge {key} already exists.")
             return
         
         # Extract the geometry if available
