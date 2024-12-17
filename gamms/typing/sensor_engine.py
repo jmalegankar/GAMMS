@@ -8,8 +8,11 @@ class SensorType(Enum):
     AGENT = 3
 
 class ISensor(ABC):
+    type: SensorType
+    data: Dict[str, Any]
+
     @abstractmethod
-    def sense(self) -> Dict[str, Any]:
+    def sense(self, node_id: int) -> Dict[str, Any]:
         pass
 
     @abstractmethod
@@ -19,4 +22,12 @@ class ISensor(ABC):
 class ISensorEngine(ABC):
     @abstractmethod
     def create_sensor(self, sensor_type: Enum, sensor_data: Dict[str, Any]):
+        pass
+
+    @abstractmethod
+    def get_sensor(self, id) -> ISensor:
+        pass
+
+    @abstractmethod
+    def terminate(self):
         pass

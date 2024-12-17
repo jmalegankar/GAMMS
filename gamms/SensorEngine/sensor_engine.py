@@ -1,4 +1,5 @@
 from gamms.typing.sensor_engine import SensorType, ISensor, ISensorEngine
+from typing import Any, Dict
 
 class NeighborSensor(ISensor):
     def __init__(self, id, type, nodes, edges):
@@ -8,7 +9,6 @@ class NeighborSensor(ISensor):
         self.edges = edges
         self.data = []
     
-    #sense
     def sense(self, node_id):
         nearest_neighbors = set()
         for edge in self.edges.values():
@@ -18,7 +18,7 @@ class NeighborSensor(ISensor):
                 nearest_neighbors.add(edge.source)
         self.data = list(nearest_neighbors)
     
-    def update(self, node_id):
+    def update(self, data: Dict[str, Any]):
         return 
 
 class MapSensor(ISensor):
@@ -32,7 +32,7 @@ class MapSensor(ISensor):
     def sense(self, node_id):
         self.data = (self.nodes, self.edges)
     
-    def update(self, node_id):
+    def update(self, data: Dict[str, Any]):
         return
     
 #return pos, node_id of all agents
@@ -43,14 +43,13 @@ class AgentSensor(ISensor):
         self.agents = agents
         self.data = []
     
-    #sense
     def sense(self, node_id):
         agent_data = []
         for agent in self.agents:
             agent_data.append((agent.name, agent.current_node_id))
         self.data = agent_data
     
-    def update(self, node_id):
+    def update(self, data: Dict[str, Any]):
         return 
     
 class SensorEngine(ISensorEngine):
@@ -71,5 +70,6 @@ class SensorEngine(ISensorEngine):
     
     def get_sensor(self, id):
         return self.sensors[id]
-
-
+    
+    def terminate(self):
+        return

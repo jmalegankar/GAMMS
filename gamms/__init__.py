@@ -10,7 +10,7 @@ from enum import Enum
 
 def create_context(
     vis_engine: Enum = gamms.visual.Engine.NO_VIS,
-):
+) -> Context:
     ctx = Context()
     if vis_engine == gamms.visual.Engine.NO_VIS:
         visual_engine = None

@@ -73,3 +73,7 @@ class IGraphEngine(ABC):
     @abstractmethod
     def create_graph(self, node_struct: Type, edge_struct: Type):
         pass
+
+    @abstractmethod
+    def terminate(self):
+        pass

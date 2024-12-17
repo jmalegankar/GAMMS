@@ -25,3 +25,6 @@ class MemoryEngine(IMemoryEngine):
             raise ValueError(f"Store with name '{name}' does not exist.")
         
         return self.stores[name].load()
+    
+    def terminate(self):
+         return

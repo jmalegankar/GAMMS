@@ -1,7 +1,7 @@
 from gamms.typing import IContext
 from gamms.typing.agent_engine import IAgent, IAgentEngine
 
-from typing import Callable, Dict, Any, Optional
+from typing import Callable, Dict, Any, Optional, List
 
 class Agent(IAgent):
     def __init__(self, graph, name, start_node_id, **kwargs):
@@ -50,7 +50,7 @@ class Agent(IAgent):
 class AgentEngine(IAgentEngine):
     def __init__(self, ctx: IContext):
         self.ctx = ctx
-        self.agents = []
+        self.agents: List[IAgent] = []
 
     def create_iter(self):
         return self.agents.__iter__()
@@ -62,3 +62,13 @@ class AgentEngine(IAgentEngine):
             agent.register_sensor(sensor, self.ctx.sensor.get_sensor(sensor))
         self.agents.append(agent)
         return agent
+    
+    def terminate(self):
+        return
+    
+    def get_agent(self, name) -> IAgent:
+        for agent in self.agents:
+            if agent.name == name:
+                return agent
+        else:
+            raise ValueError(f"Agent {name} not found.")

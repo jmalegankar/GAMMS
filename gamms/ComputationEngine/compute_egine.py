@@ -77,7 +77,7 @@ class ComputeEngine(IComputeEngine):
     def wait(self, task: Task) -> None:
         self._engine.wait(task)
         
-    def shutdown(self):
+    def terminate(self):
         self._engine.shutdown()
 
 __all__ = ["ComputeEngine", "Task", "TaskStatus"]
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     for task in tasks:
         engine.wait(task)
     print("Pathological tasks completed in", time.time() - t)
-    engine.shutdown()
+    engine.terminate()

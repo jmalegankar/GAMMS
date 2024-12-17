@@ -30,3 +30,7 @@ class IVisualizationEngine(ABC):
     @abstractmethod
     def render_line(self, start_x:float, start_y:float, end_x:float, end_y:float, color: Tuple[int, int, int], width:int, isAA:bool):
         pass
+
+    @abstractmethod
+    def terminate(self):
+        pass

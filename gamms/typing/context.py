@@ -14,7 +14,7 @@ class IContext(ABC):
 
     @property
     @abstractmethod
-    def visualize(self) -> IVisualizationEngine:
+    def visual(self) -> IVisualizationEngine:
         pass
 
     @property

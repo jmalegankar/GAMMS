@@ -1,10 +1,8 @@
 import osmnx as ox
 import networkx as nx
 import matplotlib.pyplot as plt
-from typing import Dict, Any, List, Tuple
-from dataclasses import dataclass
+from typing import Dict, Any
 from shapely.geometry import LineString
-import numpy as np
 from gamms.typing.graph_engine import Node, OSMEdge, IGraph, IGraphEngine
 import pickle
 
@@ -193,3 +191,6 @@ class GraphEngine(IGraphEngine):
         self.graph = Graph()
         self.graph.load(path)
         return self.graph
+    
+    def terminate(self):
+        return

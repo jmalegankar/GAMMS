@@ -41,6 +41,10 @@ class Context(IContext):
     def visual(self) -> IVisualizationEngine:
         return self.visual_engine
     
+    @property
+    def ictx(self) -> IInternalContext:
+        return self.internal_context
+    
     def set_alive(self):
         self._alive = True
     
@@ -55,9 +59,3 @@ class Context(IContext):
             self.graph_engine.terminate()
             self.visual_engine.terminate()
             self._alive = False
-    
-    def ictx():
-        return 
-    
-    def visualize(self):
-        return 
