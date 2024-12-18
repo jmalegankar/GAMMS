@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from typing import Dict, Any
 from shapely.geometry import LineString
 from gamms.typing.graph_engine import Node, OSMEdge, IGraph, IGraphEngine
+from gamms.osm import create_osm_graph
 import pickle
 
 
@@ -13,61 +14,51 @@ class Graph(IGraph):
         self.edges: Dict[str, OSMEdge] = {}
 
     def add_node(self, node_data: Dict[str, Any]) -> None:
-        node_id = node_data['id']
-        if node_id in self.nodes:
-            #print(f"Node {node_id} already exists.")
-            return
-        node = Node(id=node_id, x=node_data['x'], y=node_data['y'])
-        self.nodes[node_id] = node
-        #print(f"Added node: {node}")
+        if node_data['id'] in self.nodes:
+            raise KeyError(f"Node {node_data['id']} already exists.")
+        
+        node = Node(id=node_data['id'], x=node_data['x'], y=node_data['y'])
+        self.nodes[node_data['id']] = node
     
     def add_edge(self, edge_data: Dict[str, Any]) -> None:
-        source = edge_data['source']
-        target = edge_data['target']
-        key = edge_data['id']
-        if key in self.edges:
-            raise KeyError(f"Edge {key} already exists.")
-        
-        # Extract the geometry if available
-        linestring = None
-        if 'geometry' in edge_data and isinstance(edge_data['geometry'], LineString):
-            linestring = [(point[0], point[1]) for point in edge_data['geometry'].coords]
+        if edge_data['id'] in self.edges:
+            raise KeyError(f"Edge {edge_data['id']} already exists.")
         
         edge = OSMEdge(
             id = edge_data['id'],
-            source=source,
-            target=target,
+            source=edge_data['source'],
+            target=edge_data['target'],
             length=edge_data['length'],
-            linestring=linestring
+            linestring=edge_data.get('linestring', None)
         )
-        self.edges[key] = edge
+        self.edges[edge_data['id']] = edge
 
     def update_node(self, node_data: Dict[str, Any]) -> None:
-        node_id = node_data['id']
-        if node_id not in self.nodes:
-            print(f"Node {node_id} does not exist.")
-            return
-        node = self.nodes[node_id]
+    
+        if node_data['id'] not in self.nodes:
+            raise KeyError(f"Node {node_data['id']} does not exist.")
+        
+        node = self.nodes[node_data['id']]
         node.x = node_data.get('x', node.x)
         node.y = node_data.get('y', node.y)
     
     def get_edge(self, edge_id):
-        pass
+        return self.edges[edge_id]
 
     def get_edges(self):
-        pass
-
+        return self.edges
+    
     def get_node(self, node_id):
-        pass
+        return self.nodes[node_id]
 
     def get_nodes(self):
-        pass
+        return self.nodes
 
 
     def update_edge(self, edge_data: Dict[str, Any]) -> None:
         source = edge_data['source']
         target = edge_data['target']
-        key = f"{source}-{target}"
+        key = edge_data['id']
         if key not in self.edges:
             print(f"Edge {key} does not exist. Use add_edge to create it.")
             return
@@ -99,13 +90,14 @@ class Graph(IGraph):
                 'y': data.get('y', 0.0)
             }
             self.add_node(node_data)
+            
         for u, v, data in G.edges(data=True):
             edge_data = {
-                'id': data.get('id', f"{u}-{v}"),
+                'id': data.get('id', -1),
                 'source': u,
                 'target': v,
                 'length': data.get('length', 0.0),
-                'geometry': data.get('geometry', None)
+                'linestring': data.get('linestring', None)
             }
             self.add_edge(edge_data)
             
@@ -170,12 +162,12 @@ class GraphEngine(IGraphEngine):
     def load_networkx(self):
         pass
 
-    def create_graph(self, location: str, network_type: str = 'walk') -> Graph:
+    def create_graph(self, location: str, network_type: str = 'walk', resolution=100, tolerance=10) -> Graph:
         """
         Creates a Graph object from a geographic location using OSMnx.
         """
         print(f"Creating graph for location: {location} with network type: {network_type}")
-        G = ox.graph_from_place(location, network_type=network_type)
+        G = create_osm_graph(location, resolution=100, tolerance=10)
         self.graph = Graph()
         self.graph.attach_networkx_graph(G)
         print("Graph creation complete.")
