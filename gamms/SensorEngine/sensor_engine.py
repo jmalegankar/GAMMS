@@ -13,9 +13,10 @@ class NeighborSensor(ISensor):
         nearest_neighbors = set()
         for edge in self.edges.values():
             if edge.source == node_id:
-                nearest_neighbors.add(edge.target)
+                nearest_neighbors.add(edge.source)
             elif edge.target == node_id:
                 nearest_neighbors.add(edge.source)
+        
         self.data = list(nearest_neighbors)
     
     def update(self, data: Dict[str, Any]):

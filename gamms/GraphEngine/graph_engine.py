@@ -1,10 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from typing import Dict, Any
-from shapely.geometry import LineString
 from gamms.typing.graph_engine import Node, OSMEdge, IGraph, IGraphEngine
 from gamms.osm import create_osm_graph
 import pickle
+from matplotlib.collections import LineCollection
+from shapely.geometry import LineString
 
 
 class Graph(IGraph):
@@ -98,36 +99,46 @@ class Graph(IGraph):
             self.add_edge(edge_data)
             
     def visualize(self) -> None:
-        """
-        Visualizes the graph using matplotlib. Nodes are plotted as points and edges as lines or curves.
-        """
-        plt.figure(figsize=(10, 10))
 
-        # Plot nodes
-        for node in self.nodes.values():
-            plt.scatter(node.x, node.y, c='blue', s=50, label='Node' if node.id == next(iter(self.nodes)) else "")
-        
-        # Plot edges
+        fig, ax = plt.subplots(figsize=(12, 12))
+
+        # Draw nodes
+        node_x = [node.x for node in self.nodes.values()]
+        node_y = [node.y for node in self.nodes.values()]
+        ax.scatter(node_x, node_y, s=10, c='blue', label='Nodes')
+
+        # Prepare edge lines
+        edge_lines = []
         for edge in self.edges.values():
-            source_node = self.nodes[edge.source]
-            target_node = self.nodes[edge.target]
-
-            if edge.linestring:
-                # Ensure that the first point in linestring matches the source node and the last point matches the target node
-                linestring = [(source_node.x, source_node.y)] + edge.linestring[1:-1] + [(target_node.x, target_node.y)]
-                
-                # Plot curved edge
-                x_values, y_values = zip(*linestring)
-                plt.plot(x_values, y_values, 'k-', alpha=0.7, label='Curved Edge' if edge == next(iter(self.edges.values())) else "")
+            if edge.linestring and isinstance(edge.linestring, LineString):
+                # Use the LineString geometry if available
+                x, y = edge.linestring.xy
+                edge_lines.append(list(zip(x, y)))
             else:
-                # Plot straight edge between source and target nodes
-                plt.plot([source_node.x, target_node.x], [source_node.y, target_node.y], 'k-', alpha=0.5, label='Edge' if edge == next(iter(self.edges.values())) else "")
-        
-        plt.title("Graph Visualization")
-        plt.xlabel("Longitude")
-        plt.ylabel("Latitude")
-        plt.legend()
-        plt.grid(False)
+                # Fallback to a straight line between source and target nodes
+                source_node = self.get_node(edge.source)
+                target_node = self.get_node(edge.target)
+                edge_lines.append([(source_node.x, source_node.y), (target_node.x, target_node.y)])
+
+        # Create a LineCollection from the edge lines
+        lc = LineCollection(edge_lines, colors='gray', linewidths=1, alpha=0.7, label='Edges')
+        ax.add_collection(lc)
+
+        # Set plot titles and labels
+        ax.set_title('Graph Visualization with LineString Geometries')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+
+        # Set equal scaling
+        ax.set_aspect('equal', adjustable='datalim')
+
+        # Add legend
+        ax.legend()
+
+        # Show grid
+        ax.grid(True)
+
+        # Display the plot
         plt.show()
     
     def save(self, path: str) -> None:

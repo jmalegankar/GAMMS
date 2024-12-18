@@ -1,5 +1,5 @@
 from gamms.typing import IVisualizationEngine
-from gamms.VisualizationEngine.constants import *
+from constants import *
 from camera import Camera
 import pygame
 import math
@@ -48,7 +48,6 @@ class VisualizationEngine(IVisualizationEngine):
         self.camera = Camera(self, 0, 0, 15)
         self.graph_visual.setCamera(self.camera)
     
-
     def handle_input(self):
         for event in pygame.event.get():
             pressed_keys = pygame.key.get_pressed()
@@ -219,17 +218,8 @@ class VisualizationEngine(IVisualizationEngine):
 
         for y in range(int(y_min), int(y_max) + 1, step):
             self.render_line(x_min, y, x_max, y, Color.LightGray, 3 if y % 5 == 0 else 1, False)
+    
 
-    def run_game_loop(self):
-        """
-        This is a basic game loop, can override in implementation.
-        """
-        clock = pygame.time.Clock()
-        while True:
-            self.handle_input()
-            self.handle_tick()
-            self.handle_render()
-            pygame.display.flip()
-            delta_time = clock.tick(30)
 
-        self.cleanup()
+        
+
