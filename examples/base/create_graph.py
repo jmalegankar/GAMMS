@@ -1,12 +1,5 @@
 from config import location, graph_path
 
-import gamms
-import gamms.osm
-
-import networkx as nx
-import matplotlib.pyplot as plt
-from matplotlib.collections import LineCollection
-from shapely.geometry import LineString
 from gamms.GraphEngine.graph_engine import GraphEngine
 # Create a graph
 
