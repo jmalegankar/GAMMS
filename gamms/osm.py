@@ -30,6 +30,7 @@ def create_osm_graph(
     retain_all: bool = False,
     truncate_by_edge: bool = True,
     custom_filter: str = None,
+    tolerance: int =10.0
 ) -> nx.MultiDiGraph:
     resolution = float(resolution)
     osmg = ox.graph_from_place(
@@ -38,9 +39,13 @@ def create_osm_graph(
         simplify=simplify,
         retain_all=retain_all,
         truncate_by_edge=truncate_by_edge,
-        custom_filter=custom_filter,
+        custom_filter=custom_filter
     )
-    # osmg = ox.consolidate_intersections(osmg, tolerance=resolution, rebuild_graph=True, dead_ends=True)
+    
+    osmg = ox.project_graph(osmg)
+    osmg = ox.consolidate_intersections(osmg, tolerance=tolerance, rebuild_graph=True, dead_ends=True)
+    osmg = ox.project_graph(osmg, to_latlong=True)
+    ox.plot_graph(osmg)
     # Process line strings to add extra nodes and edges
     ret = nx.MultiDiGraph()
     edges = osmg.edges(data=True)
@@ -83,6 +88,7 @@ def create_osm_graph(
             ls = LineString(line)
             ret.add_edge(u, v, linestring=ls, length=length*ls.length/linestring.length)
     del osmg
+
 
     nxg = nx.MultiDiGraph()
     count = 0
