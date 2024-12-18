@@ -24,6 +24,7 @@ class Graph(IGraph):
     def add_edge(self, edge_data: Dict[str, Any]) -> None:
         source = edge_data['source']
         target = edge_data['target']
+        key = edge_data['id']
         if key in self.edges:
             raise KeyError(f"Edge {key} already exists.")
         
