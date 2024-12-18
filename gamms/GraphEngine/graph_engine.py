@@ -12,7 +12,19 @@ class Graph(IGraph):
     def __init__(self):
         self.nodes: Dict[int, Node] = {}
         self.edges: Dict[str, OSMEdge] = {}
+    
+    def get_edge(self, edge_id):
+        return self.edges[edge_id]
 
+    def get_edges(self):
+        return self.edges
+    
+    def get_node(self, node_id):
+        return self.nodes[node_id]
+
+    def get_nodes(self):
+        return self.nodes
+    
     def add_node(self, node_data: Dict[str, Any]) -> None:
         if node_data['id'] in self.nodes:
             raise KeyError(f"Node {node_data['id']} already exists.")
@@ -42,45 +54,30 @@ class Graph(IGraph):
         node.x = node_data.get('x', node.x)
         node.y = node_data.get('y', node.y)
     
-    def get_edge(self, edge_id):
-        return self.edges[edge_id]
-
-    def get_edges(self):
-        return self.edges
-    
-    def get_node(self, node_id):
-        return self.nodes[node_id]
-
-    def get_nodes(self):
-        return self.nodes
-
-
     def update_edge(self, edge_data: Dict[str, Any]) -> None:
-        source = edge_data['source']
-        target = edge_data['target']
-        key = edge_data['id']
-        if key not in self.edges:
-            print(f"Edge {key} does not exist. Use add_edge to create it.")
-            return
-        self.edges[key].length = edge_data.get('length', self.edges[key].length)
-        # print(f"Updated edge {key}: {self.edges[key]}")
+
+        if edge_data['id'] not in self.edges:
+            raise KeyError(f"Edge {edge_data['id']} does not exist. Use add_edge to create it.")
+        edge = self.edges[edge_data['id']]
+        edge.source = edge_data.get('source', edge.source)
+        edge.target = edge_data.get('target', edge.target)
+        edge.length = edge_data.get('length', edge.length)
+        edge.linestring = edge_data.get('linestring', edge.linestring)
 
     def remove_node(self, node_id: int) -> None:
         if node_id not in self.nodes:
-            print(f"Node {node_id} does not exist.")
-            return
+            raise KeyError(f"Node {node_id} does not exist.")
+        
         edges_to_remove = [key for key, edge in self.edges.items() if edge.source == node_id or edge.target == node_id]
         for key in edges_to_remove:
             del self.edges[key]
             print(f"Deleted edge {key} associated with node {node_id}")
         del self.nodes[node_id]
 
-    def remove_edge(self, source: int, target: int) -> None:
-        key = f"{source}-{target}"
-        if key not in self.edges:
-            print(f"Edge {key} does not exist.")
-            return
-        del self.edges[key]
+    def remove_edge(self, node_id) -> None:
+        if node_id not in self.edges:
+            raise KeyError(f"Edge {node_id} does not exist. Use add_edge to create it.")
+        del self.edges[id]
     
     def attach_networkx_graph(self, G: nx.Graph) -> None:
         for node, data in G.nodes(data=True):
@@ -141,7 +138,6 @@ class Graph(IGraph):
         pickle.dump({"nodes": self.nodes, "edges": self.edges}, open(path, 'wb'))
         print(f"Graph saved to {path}")
 
-
     def load(self, path: str) -> None:
         """
         Loads the graph from a file.
@@ -158,9 +154,6 @@ class GraphEngine(IGraphEngine):
     
     def graph(self) -> Graph:
         return self.graph
-
-    def load_networkx(self):
-        pass
 
     def create_graph(self, location: str, network_type: str = 'walk', resolution=100, tolerance=10) -> Graph:
         """

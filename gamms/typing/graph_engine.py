@@ -67,10 +67,6 @@ class IGraphEngine(ABC):
         pass
 
     @abstractmethod
-    def load_networkx(self):
-        pass
-
-    @abstractmethod
     def create_graph(self, node_struct: Type, edge_struct: Type):
         pass
 
