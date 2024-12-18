@@ -37,10 +37,10 @@ strategies.update(red_strategy.map_strategy(
 for agent in ctx.agent.create_iter():
     agent.register_strategy(strategies.get(agent.name, None))
 
-# # Set visualization configurations
+# # # Set visualization configurations
 # ctx.visualize.graph_config(**graph_vis_config)
 
-# # Set agent visualization configurations
+# # # Set agent visualization configurations
 # for name, config in agent_vis_config.items():
 #     ctx.visualize.agent_config(name, **config)
 

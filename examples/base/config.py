@@ -54,53 +54,53 @@ agent_config = {
     'agent_0': {
         'meta': {'team': 0},
         'sensors': ['neigh_0', 'map', 'agent'],
-        'start_node_id': 3351444108
+        'start_node_id': 0
     },
     'agent_1': {
         'meta': {'team': 0},
         'sensors': ['neigh_1', 'map', 'agent'],
-        'start_node_id': 3351444109
+        'start_node_id': 0
     },
     'agent_2': {
         'meta': {'team': 0},
         'sensors': ['neigh_2', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_3': {
         'meta': {'team': 0},
         'sensors': ['neigh_3', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_4': {
         'meta': {'team': 0},
         'sensors': ['neigh_4', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_5': {
         'meta': {'team': 1},
         'sensors': ['neigh_5', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_6': {
         'meta': {'team': 1},
         'sensors': ['neigh_6', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_7': {
         'meta': {'team': 1},
         'sensors': ['neigh_7', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     
     'agent_8': {
         'meta': {'team': 1},
         'sensors': ['neigh_8', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     },
     'agent_9': {
         'meta': {'team': 1},
         'sensors': ['neigh_9', 'map', 'agent'],
-        'start_node_id': 3351444110
+        'start_node_id': 0
     }
 }
 
