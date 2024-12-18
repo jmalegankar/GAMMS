@@ -22,13 +22,10 @@ class Graph(IGraph):
         #print(f"Added node: {node}")
     
     def add_edge(self, edge_data: Dict[str, Any]) -> None:
-        id_counter = 0
         source = edge_data['source']
         target = edge_data['target']
-        key = f"{source}-{target}"
         if key in self.edges:
-            #print(f"Edge {key} already exists.")
-            return
+            raise KeyError(f"Edge {key} already exists.")
         
         # Extract the geometry if available
         linestring = None
@@ -36,15 +33,13 @@ class Graph(IGraph):
             linestring = [(point[0], point[1]) for point in edge_data['geometry'].coords]
         
         edge = OSMEdge(
-            id = id_counter,
+            id = edge_data['id'],
             source=source,
             target=target,
             length=edge_data['length'],
             linestring=linestring
         )
         self.edges[key] = edge
-        id_counter += 1
-
 
     def update_node(self, node_data: Dict[str, Any]) -> None:
         node_id = node_data['id']
@@ -105,6 +100,7 @@ class Graph(IGraph):
             self.add_node(node_data)
         for u, v, data in G.edges(data=True):
             edge_data = {
+                'id': data.get('id', f"{u}-{v}"),
                 'source': u,
                 'target': v,
                 'length': data.get('length', 0.0),
