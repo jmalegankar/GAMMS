@@ -23,7 +23,9 @@ class AgentVisual:
             #some decision logic for human input
             neighbors = state["sensor"]["neighbors"] 
             
+            # ret node
             state["action"] = neighbors["?"]
+            self.position = state.get("action", None)
     
     def follow_path(self, path):
         pass
