@@ -3,9 +3,9 @@ from config import (
     vis_engine,
     graph_path,
     sensor_config,
-    agent_config
-    # graph_vis_config,
-    # agent_vis_config
+    agent_config,
+    graph_vis_config,
+    agent_vis_config
 )
 import blue_strategy
 import red_strategy
@@ -38,12 +38,14 @@ for agent in ctx.agent.create_iter():
     agent.register_strategy(strategies.get(agent.name, None))
 
 #  # Set visualization configurations
-# ctx.visual.set_graph_visual(**graph_vis_config)
+ctx.visual.set_graph_visual(**graph_vis_config)
 
-# # Set agent visualization configurations
+# Set agent visualization configurations
 
-# for name, config in agent_vis_config.items():
-#     ctx.visualize.set_agent_visual(name, **config)
+for name, config in agent_vis_config.items():
+    ctx.visual.set_agent_visual(name, **config)
+
+
 
 
 # turn_count = 0

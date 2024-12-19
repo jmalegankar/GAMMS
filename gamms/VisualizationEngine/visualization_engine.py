@@ -6,6 +6,8 @@ from gamms.VisualizationEngine.agent_visual import AgentVisual
 from gamms.GraphEngine.graph_engine import Graph
 import pygame
 import math
+from gamms import sensors
+import random
 
 
 class PygameVisualizationEngine(IVisualizationEngine):
@@ -49,6 +51,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
     
     def set_agent_visual(self, name, **kwargs):
         self.agent_visuals.append(AgentVisual(name, **kwargs))
+        print(f"Successfully set agent visual for {name}")
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -237,8 +240,16 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # Input
         # Clear any changes
         # return Input_node
+
+
+        def get_neighbours(self, **state):
+            for (type, data) in state["sensor"].items():
+                if type == sensors.NEIGHBOR:
+                    return data
+                
         self._processing_human_agent = True
         while self._processing_human_agent:
+            options = get_neighbours(state)
             node = self.get_human_agent_input()
             for event in pygame.event.get():
                 pressed_keys = pygame.key.get_pressed()

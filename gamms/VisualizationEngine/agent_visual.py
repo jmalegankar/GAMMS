@@ -14,18 +14,8 @@ class AgentVisual:
         self.prev_position = None
         self.position = None
     
-    def get_and_set_position(self, human=False, **state):
-        if not human:
-            self.prev_position = state.get("pos", None)
-            self.position = state.get("action", None)
-        else:
-            self.prev_position = state.get("pos", None)
-            #some decision logic for human input
-            neighbors = state["sensor"]["neighbors"] 
-            
-            # ret node
-            state["action"] = neighbors["?"]
-            self.position = state.get("action", None)
+
+    
     
     def follow_path(self, path):
         pass

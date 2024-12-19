@@ -105,12 +105,63 @@ agent_config = {
 }
 
 # # Visualization configuration
-# graph_vis_config = {
-#     'width' : 1980,
-#     'height' : 1080
-# }
+graph_vis_config = {
+    'width' : 1980,
+    'height' : 1080
+}
 
 # # Visualization configuration for the agents
+agent_vis_config = {
+    'agent_0': {
+        'color': 'blue',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_1': {
+        'color': 'blue',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_2': {
+        'color': 'blue',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_3': {
+        'color': 'blue',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_4': {
+        'color': 'blue',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_5': {
+        'color': 'red',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_6': {
+        'color': 'red',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_7': {
+        'color': 'red',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_8': {
+        'color': 'red',
+        'size': 500,
+        'shape': "Triangle",
+    },
+    'agent_9': {
+        'color': 'red',
+        'size': 500,
+        'shape': "Triangle",
+    }
 # agent_vis_config = {
 #     'agent_0': {
 #         'color': 'blue',
@@ -162,4 +213,4 @@ agent_config = {
 #         'size': 500,
 #         'shape': gamms.visual.shapes.Triangle,
 #     }
-# }
+}
