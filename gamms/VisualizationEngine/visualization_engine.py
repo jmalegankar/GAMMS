@@ -232,6 +232,12 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
         self.cleanup()
     
+    def update_agent_visual_pos(self):
+        for agent in self.ctx.agent.create_iter():
+            agent_visual = self.agent_visuals[agent.name]
+            agent_visual.set_postions(agent.prev_node_id, agent.current_node_id)
+    
+
     def human_input(self, state) -> int:
         # state {current_pos neighbors....}
         #draw the Graph
@@ -243,7 +249,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
 
         def get_neighbours(self, **state):
-            for (type, data) in state["sensor"].items():
+            for (type, data) in state["sensor"]:
                 if type == sensors.NEIGHBOR:
                     return data
                 

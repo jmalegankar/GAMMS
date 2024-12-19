@@ -15,7 +15,9 @@ class AgentVisual:
         self.position = None
     
 
-    
+    def set_positions(self, prev_position, position):
+        self.prev_position = prev_position
+        self.position = position
     
     def follow_path(self, path):
         pass
