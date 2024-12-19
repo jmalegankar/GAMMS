@@ -1,1 +1,2 @@
 from gamms.VisualizationEngine.constants import *
+from .visualization_engine import PygameVisualizationEngine

@@ -1,54 +1,54 @@
 from gamms.typing import IVisualizationEngine
 from gamms.VisualizationEngine.constants import *
-from camera import Camera
+from gamms.VisualizationEngine.camera import Camera
+from gamms.VisualizationEngine.graph_visual import GraphVisual
+from gamms.VisualizationEngine.agent_visual import AgentVisual
+from gamms.GraphEngine.graph_engine import Graph
 import pygame
 import math
 
-class VisualizationEngine(IVisualizationEngine):
+
+class PygameVisualizationEngine(IVisualizationEngine):
     width: int
-    """
-    The width of the screen.
-    """
-
     height: int
-    """
-    The height of the screen.
-    """
-
     screen: pygame.Surface
-    """
-    The pygame screen object.
-    """
-
     clock: pygame.time.Clock
-    """
-    The pygame clock object.
-    """
-
     default_font: pygame.font.Font
-    """
-    The default font for rendering text.
-    """
-
     camera: Camera
-    """
-    The scene camera.
-    """
 
-    #ctx
-    def __init__(self, tick_callback, graph_visual, agent_visual, width=1980, height=1080):
+    def __init__(self, ctx, tick_callback = None, width=1980, height=1080):
         pygame.init()
+        self.ctx = ctx
         self.width = width
         self.height = height
-        self.graph_visual = graph_visual
-        self.agent_visual = agent_visual
+        self.graph_visual = None
+        self.agent_visuals = []
         self.zoom = 1.0
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
         self.default_font = pygame.font.Font(None, 36)
         self.camera = Camera(self, 0, 0, 15)
-        self.graph_visual.setCamera(self.camera)
+        self.tick_callback = tick_callback
+        self._processing_human_agent = False
     
+    def set_graph_visual(self, **kwargs):
+        self.graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
+        self.graph_visual.setCamera(self.camera)
+
+        # Agent Engine -> Managing the agents
+        # -- [Agents.id]
+
+        # Visualization Engine -> Managing the map
+        # -- Graph Engine
+        # -- 
+        # -- handle_single_draw ()
+        # ---- Graph_visual <- 300
+        # ---- Agent_visual_componet[Agents.id]
+
+        print("Successfully set graph visual")
+    
+    def set_agent_visual(self, name, **kwargs):
+        self.agent_visuals.append(AgentVisual(name, **kwargs))
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -113,19 +113,21 @@ class VisualizationEngine(IVisualizationEngine):
     def handle_tick(self):
         self.clock.tick()
 
-    def handle_render(self):
+    def handle_single_draw(self):
         self.screen.fill(Color.White)
+
+        # Note: Draw in layer order of back layer -> front layer
+        # drawing 
         self._draw_grid()
-
-        top = 10
-        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
-        top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
-
-        # Draw the graph
+        
         self.graph_visual.draw_graph(self.screen)
+
+        #for players in player_list:
+        
+        #for agent_visualization in agent_draw_list:
+        # 
+
+        self.draw_hud()
 
         # Update agent positions and draw them
         # self.agent_visual.move_agents()  # Step all agents
@@ -139,6 +141,17 @@ class VisualizationEngine(IVisualizationEngine):
         #     self.graph_visual.y_min,
         #     self.graph_visual.y_max
         # )
+
+        
+
+    def draw_hud(self):
+        #FIXME: Add hud manager
+        top = 10
+        size_x, size_y = self.render_text("Some instructions here", 10, top, Space.Screen)
+        top += size_y + 10
+        size_x, size_y = self.render_text(f"Camera size: {self.camera.size:.2f}", 10, top, Space.Screen)
+        top += size_y + 10
+        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
 
     def cleanup(self):
         pygame.quit()
@@ -175,9 +188,6 @@ class VisualizationEngine(IVisualizationEngine):
         pygame.draw.circle(self.screen, color, (screen_x, screen_y), screen_radius)
 
     def render_rectangle(self, x: float, y: float, width: float, height: float, color: tuple=Color.Black):
-        """
-        Renders a rectangle on the screen. x and y are the left and top world coordinates of the rectangle.
-        """
         screen_x, screen_y = self.camera.world_to_screen(x, y)
         screen_width = self.camera.world_to_screen_scale(width)
         screen_height = self.camera.world_to_screen_scale(height)
@@ -185,20 +195,6 @@ class VisualizationEngine(IVisualizationEngine):
 
 
     def render_line(self, start_x: float, start_y: float, end_x: float, end_y: float, color: tuple=Color.Black, width: int=1, isAA: bool=False):
-        """
-        Renders a line on the screen. Coordinates are in world space.
-        Args:
-            start_x (float): The x-coordinate of the starting point in world coordinates.
-            start_y (float): The y-coordinate of the starting point in world coordinates.
-            end_x (float): The x-coordinate of the ending point in world coordinates.
-            end_y (float): The y-coordinate of the ending point in world coordinates.
-            color (tuple, optional): The color of the line. Defaults to Color.Black.
-            width (int, optional): The width of the line. Only works when drawing non anti-aliasing line. Defaults to 1.
-            isAA (bool, optional): Whether to use anti-aliasing for the line. Defaults to False.
-        Returns:
-            None
-        """
-        
         screen_start_x, screen_start_y = self.camera.world_to_screen(start_x, start_y)
         screen_end_x, screen_end_y = self.camera.world_to_screen(end_x, end_y)
         if isAA:
@@ -207,9 +203,6 @@ class VisualizationEngine(IVisualizationEngine):
             pygame.draw.line(self.screen, color, (screen_start_x, screen_start_y), (screen_end_x, screen_end_y), width)
 
     def _draw_grid(self):
-        """
-        Draws the grid on the screen.
-        """
         x_min = self.camera.x - self.camera.size * 4
         x_max = self.camera.x + self.camera.size * 4
         y_min = self.camera.y - self.camera.size_y * 4
@@ -222,15 +215,37 @@ class VisualizationEngine(IVisualizationEngine):
             self.render_line(x_min, y, x_max, y, Color.LightGray, 3 if y % 5 == 0 else 1, False)
 
     def run_game_loop(self):
-        """
-        This is a basic game loop, can override in implementation.
-        """
         clock = pygame.time.Clock()
         while True:
+            
             self.handle_input()
-            self.handle_tick()
-            self.handle_render()
-            pygame.display.flip()
+            self.handle_single_draw() 
+            if self._processing_human_agent:
+                self.draw_neig() 
+            # MoveAgents <
+            self.handle_tick() 
+            pygame.display.flip() 
             delta_time = clock.tick(30)
 
         self.cleanup()
+    
+    def human_input(self, state) -> int:
+        # state {current_pos neighbors....}
+        #draw the Graph
+        #draw an overaly on the node from state
+        # Draw the neighbor overle
+        # Input
+        # Clear any changes
+        # return Input_node
+        self._processing_human_agent = True
+        while self._processing_human_agent:
+            node = self.get_human_agent_input()
+            for event in pygame.event.get():
+                pressed_keys = pygame.key.get_pressed()
+                if pressed_keys[pygame.K_1]:
+                    self._processing_human_agent = False
+                    break
+        # Return node id from neighbors or current node id
+        return node
+
+        

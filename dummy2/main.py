@@ -2,7 +2,7 @@ from gamms.GraphEngine.graph_engine import GraphEngine
 from agent_engine import AgentEngine
 from graph_visual import GraphVisual
 from agent_visual import AgentVisual
-from gamms.VisualizationEngine.visualization_engine import VisualizationEngine
+from gamms.VisualizationEngine.visualization_engine import PygameVisualizationEngine
 #from visualization_engine import VisualizationEngine
 import pygame
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # agent_visual = AgentVisual(agent_engine)
 
     # # # # Initialize and run the visualization engine
-    visualization = VisualizationEngine(None, graph_visual, None)
+    visualization = PygameVisualizationEngine(None, graph_visual, None)
     camera = visualization.camera
     screen = visualization.screen
     # while True:

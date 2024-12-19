@@ -3,7 +3,7 @@ import gamms
 
 
 # Visualization
-vis_engine = gamms.visual.Engine.NO_VIS
+vis_engine = gamms.visual.Engine.PYGAME
 
 # The path to the graph file
 location = "West Point, New York, USA"
@@ -106,13 +106,8 @@ agent_config = {
 
 # # Visualization configuration
 # graph_vis_config = {
-#     'node_shape': gamms.visual.shapes.Circle,
-#     'node_size': 500,
-#     'node_color': gamms.visual.colors.LightBlue,
-#     'edge_color': gamms.visual.colors.Black,
-#     'width': 2,
-#     'with_labels': True,
-#     'pos': None
+#     'width' : 1980,
+#     'height' : 1080
 # }
 
 # # Visualization configuration for the agents

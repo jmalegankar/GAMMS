@@ -15,7 +15,7 @@ def create_context(
     if vis_engine == gamms.visual.Engine.NO_VIS:
         visual_engine = None
     elif vis_engine == gamms.visual.Engine.PYGAME:
-        raise NotImplementedError()
+        visual_engine = _visual_engine.PygameVisualizationEngine(ctx)
     else:
         raise NotImplementedError(f"Visualization engine {vis_engine} not implemented")
     

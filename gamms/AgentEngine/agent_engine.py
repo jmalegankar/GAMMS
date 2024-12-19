@@ -26,7 +26,7 @@ class Agent(IAgent):
     def step(self):
         if self.strategy is None:
             raise AttributeError("Strategy is not set.")
-        
+        print(f"Agent {self.name} Pos {self.current_node_id} is moving")
         state = self.get_state()
         self.strategy(state)
         self.set_state()

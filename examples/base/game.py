@@ -4,8 +4,8 @@ from config import (
     graph_path,
     sensor_config,
     agent_config
-    #graph_vis_config,
-    #agent_vis_config,
+    # graph_vis_config,
+    # agent_vis_config
 )
 import blue_strategy
 import red_strategy
@@ -37,12 +37,13 @@ strategies.update(red_strategy.map_strategy(
 for agent in ctx.agent.create_iter():
     agent.register_strategy(strategies.get(agent.name, None))
 
-# # # Set visualization configurations
-# ctx.visualize.graph_config(**graph_vis_config)
+#  # Set visualization configurations
+# ctx.visual.set_graph_visual(**graph_vis_config)
 
-# # # Set agent visualization configurations
+# # Set agent visualization configurations
+
 # for name, config in agent_vis_config.items():
-#     ctx.visualize.agent_config(name, **config)
+#     ctx.visualize.set_agent_visual(name, **config)
 
 
 # turn_count = 0
@@ -82,7 +83,8 @@ while not ctx.is_terminated():
             agent.step()
         else:
             state = agent.get_state()
-            ctx.human_input(state)
+            node = ctx.human_input(state)
+            state['action'] = node
             agent.set_state()
     #valid_step(ctx)
     #agent_reset(ctx)

@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from visualization_engine import VisualizationEngine
+    from visualization_engine import PygameVisualizationEngine
 
 class Camera:
-    def __init__(self, visualization_engine: "VisualizationEngine", x=0, y=0, size=5):
+    def __init__(self, visualization_engine: "PygameVisualizationEngine", x=0, y=0, size=5):
         self._x = x
         self._y = y
         self._size = size

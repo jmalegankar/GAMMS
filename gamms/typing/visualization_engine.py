@@ -42,7 +42,7 @@ class IVisualizationEngine(ABC):
         pass
 
     @abstractmethod
-    def handle_render(self):
+    def handle_single_draw(self):
         """
         This will be called every tick of the game loop, used to handle all rendering.
         """

@@ -111,7 +111,7 @@ class VisualizationEngine(IVisualizationEngine):
     def handle_tick(self):
         self.clock.tick()
 
-    def handle_render(self):
+    def handle_single_draw(self):
         self.screen.fill(Color.White)
         self._draw_grid()
 
