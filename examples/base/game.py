@@ -64,7 +64,7 @@ def agent_reset(ctx):
     for blue_agent in blue_agent_pos:
         for red_agent in red_agent_pos:
             if blue_agent_pos[blue_agent] == red_agent_pos[red_agent]:
-                ctx.agent.get_agent(red_agent).current_node_id = 3351444108
+                ctx.agent.get_agent(red_agent).current_node_id = 0
 
 def valid_step(ctx):
     for agent in ctx.agent.create_iter():

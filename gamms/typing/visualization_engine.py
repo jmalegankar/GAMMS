@@ -27,8 +27,6 @@ class IVisualizationEngine(ABC):
         self.will_quit: bool = False
         
 
-
-
     @abstractmethod
     def handle_input(self):
         """

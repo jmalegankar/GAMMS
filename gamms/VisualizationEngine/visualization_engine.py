@@ -35,6 +35,7 @@ class VisualizationEngine(IVisualizationEngine):
     The scene camera.
     """
 
+    #ctx
     def __init__(self, tick_callback, graph_visual, agent_visual, width=1980, height=1080):
         pygame.init()
         self.width = width
