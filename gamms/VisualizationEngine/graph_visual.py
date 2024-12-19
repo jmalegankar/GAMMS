@@ -43,11 +43,11 @@ class GraphVisual:
         #map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
         return map_position
 
-    def draw_node(self, screen, node):
+    def draw_node(self, screen, node, color=(173, 255, 47)):
         # """Draw a node as a circle with a light greenish color."""
         position = (node.x, node.y)
         (x, y) = self.ScalePositionToScreen(position)
-        pygame.draw.circle(screen, (173, 255, 47), (int(x), int(y)), 4)  # Light greenish color
+        pygame.draw.circle(screen, color, (int(x), int(y)), 4)  # Light greenish color
         # if node.base:
         #     pygame.draw.circle(screen, (173, 255, 47), (int(x), int(y)), 6)  # Light greenish color
         # else:

@@ -85,12 +85,16 @@ while not ctx.is_terminated():
             agent.step()
         else:
             state = agent.get_state()
-            node = ctx.human_input(state)
-            state['action'] = node
-            agent.set_state()
+            # node = ctx.human_input(state)
+            # state['action'] = node
+            # agent.set_state()
+
+            ctx.visual._processing_human_agent = True
+            ctx.visual.human_input(state)
     #valid_step(ctx)
     #agent_reset(ctx)
-    break
-    # ctx.visualize.update()
+    # break
+    
+    ctx.visual.update()
     # ctx.save_frame()
     # rule_terminate(ctx)

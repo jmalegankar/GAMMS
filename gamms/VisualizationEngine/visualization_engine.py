@@ -4,9 +4,10 @@ from gamms.VisualizationEngine.camera import Camera
 from gamms.VisualizationEngine.graph_visual import GraphVisual
 from gamms.VisualizationEngine.agent_visual import AgentVisual
 from gamms.GraphEngine.graph_engine import Graph
+from gamms.context import Context
 import pygame
 import math
-from gamms import sensors
+from gamms.typing.sensor_engine import SensorType
 import random
 
 
@@ -20,7 +21,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
     def __init__(self, ctx, tick_callback = None, width=1980, height=1080):
         pygame.init()
-        self.ctx = ctx
+        self.ctx: Context = ctx
         self.width = width
         self.height = height
         self.graph_visual = None
@@ -113,6 +114,13 @@ class PygameVisualizationEngine(IVisualizationEngine):
                 self.height = event.h
                 self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
 
+            if self._processing_human_agent and event.type == pygame.KEYDOWN:
+                if pygame.K_1 <= event.key <= pygame.K_9:
+                    number_pressed = event.key - pygame.K_0
+                    if number_pressed in self._input_options:
+                        self._processing_human_agent = False
+                        self._input_option_result = self._input_options[number_pressed]
+
     def handle_tick(self):
         self.clock.tick()
 
@@ -129,6 +137,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         
         #for agent_visualization in agent_draw_list:
         # 
+        self.draw_input_overlay()
 
         self.draw_hud()
 
@@ -145,7 +154,19 @@ class PygameVisualizationEngine(IVisualizationEngine):
         #     self.graph_visual.y_max
         # )
 
+    def draw_input_overlay(self):
+        if not self._processing_human_agent:
+            return
         
+        # TODO draw agent overlay
+        
+        for key_id, node_id in self._input_options.items():
+            node = self.ctx.graph.graph.get_node(node_id)
+            self.graph_visual.draw_node(self.screen, node, Color.Blue)
+
+            position = (node.x, node.y)
+            (x, y) = self.graph_visual.ScalePositionToScreen(position)
+            self.render_text(str(key_id + 1), x, y, Space.Screen, Color.Black)
 
     def draw_hud(self):
         #FIXME: Add hud manager
@@ -231,12 +252,21 @@ class PygameVisualizationEngine(IVisualizationEngine):
             delta_time = clock.tick(30)
 
         self.cleanup()
+
+    def update(self):
+        self.handle_input()
+        self.handle_single_draw()
+        self.handle_tick()
+        pygame.display.flip()
     
     def update_agent_visual_pos(self):
         for agent in self.ctx.agent.create_iter():
             agent_visual = self.agent_visuals[agent.name]
             agent_visual.set_postions(agent.prev_node_id, agent.current_node_id)
-    
+
+    @property
+    def input_option_result(self):
+        return self._input_option_result
 
     def human_input(self, state) -> int:
         # state {current_pos neighbors....}
@@ -248,21 +278,27 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # return Input_node
 
 
-        def get_neighbours(self, **state):
-            for (type, data) in state["sensor"]:
-                if type == sensors.NEIGHBOR:
+        def get_neighbours(state):
+            for (type, data) in state["sensor"].values():
+                if type == SensorType.NEIGHBOR:
                     return data
                 
-        self._processing_human_agent = True
-        while self._processing_human_agent:
-            options = get_neighbours(state)
-            node = self.get_human_agent_input()
-            for event in pygame.event.get():
-                pressed_keys = pygame.key.get_pressed()
-                if pressed_keys[pygame.K_1]:
-                    self._processing_human_agent = False
-                    break
-        # Return node id from neighbors or current node id
-        return node
+        # dict[int, node_id]
+        options: list[int] = get_neighbours(state)
+        self._input_options: dict[int, int] = {}
+        for i in range(min(len(options), 9)):
+            self._input_options[i] = options[i]
+
+        # self._processing_human_agent = True
+        # while self._processing_human_agent:
+        #     options = get_neighbours(state)
+        #     node = self.get_human_agent_input()
+        #     for event in pygame.event.get():
+        #         pressed_keys = pygame.key.get_pressed()
+        #         if pressed_keys[pygame.K_1]:
+        #             self._processing_human_agent = False
+        #             break
+        # # Return node id from neighbors or current node id
+        # return node
 
         
