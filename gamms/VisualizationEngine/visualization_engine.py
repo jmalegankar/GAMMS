@@ -32,7 +32,9 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self.default_font = pygame.font.Font(None, 36)
         self.camera = Camera(self, 0, 0, 15)
         self.tick_callback = tick_callback
-        self._processing_human_agent = False
+        self._waiting_user_input = False
+        self._input_option_result = None
+        self._current_waiting_agent = None
     
     def set_graph_visual(self, **kwargs):
         self.graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
@@ -114,11 +116,10 @@ class PygameVisualizationEngine(IVisualizationEngine):
                 self.height = event.h
                 self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
 
-            if self._processing_human_agent and event.type == pygame.KEYDOWN:
+            if self._waiting_user_input and event.type == pygame.KEYDOWN:
                 if pygame.K_1 <= event.key <= pygame.K_9:
                     number_pressed = event.key - pygame.K_0
                     if number_pressed in self._input_options:
-                        self._processing_human_agent = False
                         self._input_option_result = self._input_options[number_pressed]
 
     def handle_tick(self):
@@ -155,7 +156,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # )
 
     def draw_input_overlay(self):
-        if not self._processing_human_agent:
+        if not self._waiting_user_input:
             return
         
         # TODO draw agent overlay
@@ -166,7 +167,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
             position = (node.x, node.y)
             (x, y) = self.graph_visual.ScalePositionToScreen(position)
-            self.render_text(str(key_id + 1), x, y, Space.Screen, Color.Black)
+            self.render_text(str(key_id), x, y, Space.Screen, Color.Black)
 
     def draw_hud(self):
         #FIXME: Add hud manager
@@ -244,7 +245,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
             
             self.handle_input()
             self.handle_single_draw() 
-            if self._processing_human_agent:
+            if self._waiting_user_input:
                 self.draw_neig() 
             # MoveAgents <
             self.handle_tick() 
@@ -265,10 +266,18 @@ class PygameVisualizationEngine(IVisualizationEngine):
             agent_visual.set_postions(agent.prev_node_id, agent.current_node_id)
 
     @property
+    def waiting_user_input(self):
+        return self._waiting_user_input
+
+    @property
     def input_option_result(self):
         return self._input_option_result
+    
+    @property
+    def current_waiting_agent(self):
+        return self._current_waiting_agent
 
-    def human_input(self, state) -> int:
+    def human_input(self, agent) -> int:
         # state {current_pos neighbors....}
         #draw the Graph
         #draw an overaly on the node from state
@@ -276,7 +285,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # Input
         # Clear any changes
         # return Input_node
-
+        self._waiting_user_input = True
 
         def get_neighbours(state):
             for (type, data) in state["sensor"].values():
@@ -284,9 +293,13 @@ class PygameVisualizationEngine(IVisualizationEngine):
                     return data
                 
         # dict[int, node_id]
+        self._current_waiting_agent = agent
+        state = agent.get_state()
         options: list[int] = get_neighbours(state)
         self._input_options: dict[int, int] = {}
-        for i in range(min(len(options), 9)):
+        for i in range(1, min(len(options), 11)):
+            if i == 10:
+                self._input_options[0] = options[i]
             self._input_options[i] = options[i]
 
         # self._processing_human_agent = True
@@ -301,4 +314,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # # Return node id from neighbors or current node id
         # return node
 
-        
+    def end_handle_human_input(self):
+        self._waiting_user_input = False
+        self._input_option_result = None
+        self._current_waiting_agent = None
