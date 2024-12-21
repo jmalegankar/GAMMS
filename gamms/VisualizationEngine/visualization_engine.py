@@ -20,6 +20,8 @@ class PygameVisualizationEngine(IVisualizationEngine):
     camera: Camera
 
     def __init__(self, ctx, tick_callback = None, width=1980, height=1080):
+        super().__init__(tick_callback)
+
         pygame.init()
         self.ctx: Context = ctx
         self.width = width
@@ -255,6 +257,10 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self.cleanup()
 
     def update(self):
+        if self.will_quit:
+            self.ctx.terminate()
+            return
+        
         self.handle_input()
         self.handle_single_draw()
         self.handle_tick()
@@ -318,3 +324,9 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._waiting_user_input = False
         self._input_option_result = None
         self._current_waiting_agent = None
+
+    def start_simulation(self):
+        self._waiting_simulation = True
+
+    def terminate(self):
+        self.cleanup()
