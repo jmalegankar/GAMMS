@@ -164,7 +164,7 @@ class GraphEngine(IGraphEngine):
     
     @property
     def graph(self) -> IGraph:
-        return self.graph
+        return self._graph
     
     def attach_networkx_graph(self, G: nx.Graph) -> IGraph:
         """
