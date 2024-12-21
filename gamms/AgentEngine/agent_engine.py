@@ -29,8 +29,6 @@ class Agent(IAgent):
         state = self.get_state()
         self.strategy(state)
         self.set_state()
-        print(f"Moved to node {self.current_node_id}")
-
 
     def get_state(self) -> dict:
         for sensor in self.sensor_list.values():
@@ -49,25 +47,26 @@ class Agent(IAgent):
 class AgentEngine(IAgentEngine):
     def __init__(self, ctx: IContext):
         self.ctx = ctx
-        self.agents: List[IAgent] = []
+        self.agents: Dict[str, IAgent] = []
 
     def create_iter(self):
-        return self.agents.__iter__()
+        return self.agents.values()
     
     def create_agent(self, name, **kwargs):
         start_node_id = kwargs.pop('start_node_id')
         agent = Agent(self.ctx.graph, name, start_node_id, **kwargs)
         for sensor in kwargs['sensors']:
             agent.register_sensor(sensor, self.ctx.sensor.get_sensor(sensor))
-        self.agents.append(agent)
+        if name in self.agents:
+            raise ValueError(f"Agent {name} already exists.")
+        self.agents[name] = agent
         return agent
     
     def terminate(self):
         return
     
-    def get_agent(self, name) -> IAgent:
-        for agent in self.agents:
-            if agent.name == name:
-                return agent
+    def get_agent(self, name: str) -> IAgent:
+        if name in self.agents:
+            return self.agents[name]
         else:
             raise ValueError(f"Agent {name} not found.")

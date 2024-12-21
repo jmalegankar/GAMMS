@@ -1,12 +1,10 @@
 from config import location, graph_path
-
-from gamms.GraphEngine.graph_engine import GraphEngine
+import gamms
+import pickle
 # Create a graph
 
-graph_egine = GraphEngine()
-graph_egine.create_graph(location)
+G = gamms.osm.create_osm_graph(location)
 
-graph_egine.graph.save(graph_path)
-
-# graph_egine.load(graph_path)
-# graph_egine.graph.visualize()
+# Save the graph
+with open(graph_path, 'wb') as f:
+    pickle.dump(G, f)

@@ -7,7 +7,7 @@ vis_engine = gamms.visual.Engine.PYGAME
 
 # The path to the graph file
 location = "West Point, New York, USA"
-graph_path = 'graph.npz'
+graph_path = 'graph.pkl'
 
 # Sensor configuration
 sensor_config = {

@@ -1,10 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Union
 
-
-#CAN CHANGE
 class IAgent(ABC):
-    name: Union[str, int]
+    name: str
 
     @abstractmethod
     def step(self):
@@ -14,6 +11,14 @@ class IAgent(ABC):
         pass
     @abstractmethod
     def set_state(self, state):
+        pass
+
+    @abstractmethod
+    def register_sensor(self, name, sensor):
+        pass
+
+    @abstractmethod
+    def register_strategy(self, strategy):
         pass
 
 class IAgentEngine(ABC):
@@ -30,5 +35,5 @@ class IAgentEngine(ABC):
         pass
 
     @abstractmethod
-    def get_agent(self, name: Union[str, int]) -> IAgent:
+    def get_agent(self, name: str) -> IAgent:
         pass

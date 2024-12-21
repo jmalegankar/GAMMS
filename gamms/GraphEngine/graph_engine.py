@@ -1,17 +1,13 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 from typing import Dict, Any
 from gamms.typing.graph_engine import Node, OSMEdge, IGraph, IGraphEngine
 from gamms.osm import create_osm_graph
 import pickle
-from matplotlib.collections import LineCollection
-from shapely.geometry import LineString
-
 
 class Graph(IGraph):
     def __init__(self):
         self.nodes: Dict[int, Node] = {}
-        self.edges: Dict[str, OSMEdge] = {}
+        self.edges: Dict[int, OSMEdge] = {}
     
     def get_edge(self, edge_id):
         return self.edges[edge_id]
@@ -99,6 +95,10 @@ class Graph(IGraph):
             self.add_edge(edge_data)
             
     def visualize(self) -> None:
+        # A debug function to visualize the graph
+        import matplotlib.pyplot as plt
+        from matplotlib.collections import LineCollection
+        from shapely.geometry import LineString
 
         fig, ax = plt.subplots(figsize=(12, 12))
 
@@ -160,27 +160,23 @@ class Graph(IGraph):
 class GraphEngine(IGraphEngine):
     def __init__(self, ctx = None):
         self.ctx = ctx
-        self.graph = None
+        self._graph = Graph()
     
-    def graph(self) -> Graph:
+    @property
+    def graph(self) -> IGraph:
         return self.graph
-
-    def create_graph(self, location: str, network_type: str = 'walk', resolution=100, tolerance=10) -> Graph:
+    
+    def attach_networkx_graph(self, G: nx.Graph) -> IGraph:
         """
-        Creates a Graph object from a geographic location using OSMnx.
+        Attaches a NetworkX graph to the Graph object.
         """
-        print(f"Creating graph for location: {location} with network type: {network_type}")
-        G = create_osm_graph(location, resolution=100, tolerance=10)
-        self.graph = Graph()
         self.graph.attach_networkx_graph(G)
-        print("Graph creation complete.")
         return self.graph
 
-    def load(self, path: str) -> Graph:
+    def load(self, path: str) -> IGraph:
         """
         Loads a graph from a file.
         """
-        self.graph = Graph()
         self.graph.load(path)
         return self.graph
     

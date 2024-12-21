@@ -10,11 +10,15 @@ from config import (
 import blue_strategy
 import red_strategy
 
+import pickle
+
 ctx = gamms.create_context(vis_engine=vis_engine)
 
 # Load the graph
-ctx.graph.load(graph_path)
+with open(graph_path, 'rb') as f:
+    G = pickle.load(f)
 
+ctx.graph.attach_networkx_graph(G)
 
 # Create the sensors
 for name, sensor in sensor_config.items():
