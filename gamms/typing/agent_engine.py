@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 class IAgent(ABC):
     name: str
-
     @abstractmethod
     def step(self):
         pass
