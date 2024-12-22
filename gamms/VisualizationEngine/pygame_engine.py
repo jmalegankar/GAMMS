@@ -165,7 +165,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         
         for key_id, node_id in self._input_options.items():
             node = self.ctx.graph.graph.get_node(node_id)
-            self._graph_visual.draw_node(self._screen, node, Color.Blue)
+            self._graph_visual.draw_node(self._screen, node, Color.Purple)
 
             position = (node.x, node.y)
             (x, y) = self._graph_visual.ScalePositionToScreen(position)
@@ -178,7 +178,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         top += size_y + 10
         size_x, size_y = self.render_text(f"Camera size: {self._camera.size:.2f}", 10, top, Space.Screen)
         top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
+        size_x, size_y = self.render_text(f"Current turn: {self._waiting_agent_name}", 10, top, Space.Screen)
 
     def cleanup(self):
         pygame.quit()
