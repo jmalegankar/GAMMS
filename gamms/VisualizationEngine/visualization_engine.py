@@ -3,13 +3,13 @@ from gamms.VisualizationEngine.constants import *
 from gamms.VisualizationEngine.camera import Camera
 from gamms.VisualizationEngine.graph_visual import GraphVisual
 from gamms.VisualizationEngine.agent_visual import AgentVisual
-from gamms.GraphEngine.graph_engine import Graph
 from gamms.context import Context
 import pygame
-import math
 from gamms.typing.sensor_engine import SensorType
-import random
 
+from typing import Dict, Any, TYPE_CHECKING
+if TYPE_CHECKING:
+    from gamms.typing.agent_engine import IAgent
 
 class PygameVisualizationEngine(IVisualizationEngine):
     width: int
@@ -27,7 +27,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self.width = width
         self.height = height
         self.graph_visual = None
-        self.agent_visuals = []
+        self.agent_visuals: dict[str, AgentVisual] = {}
         self.zoom = 1.0
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
@@ -36,7 +36,10 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self.tick_callback = tick_callback
         self._waiting_user_input = False
         self._input_option_result = None
-        self._current_waiting_agent = None
+        # self._current_waiting_agent = None
+        self._waiting_agent_name = None
+        self._waiting_simulation = False
+        self._simulation_time = 0
     
     def set_graph_visual(self, **kwargs):
         self.graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
@@ -55,7 +58,9 @@ class PygameVisualizationEngine(IVisualizationEngine):
         print("Successfully set graph visual")
     
     def set_agent_visual(self, name, **kwargs):
-        self.agent_visuals.append(AgentVisual(name, **kwargs))
+        agent = self.ctx.agent.get_agent(name)
+        node = self.ctx.graph.graph.get_node(agent.current_node_id)
+        self.agent_visuals[name] = (AgentVisual(name, (node.x, node.y), **kwargs))
         print(f"Successfully set agent visual for {name}")
 
     def handle_input(self):
@@ -119,27 +124,35 @@ class PygameVisualizationEngine(IVisualizationEngine):
                 self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
 
             if self._waiting_user_input and event.type == pygame.KEYDOWN:
-                if pygame.K_1 <= event.key <= pygame.K_9:
+                if pygame.K_0 <= event.key <= pygame.K_9:
                     number_pressed = event.key - pygame.K_0
                     if number_pressed in self._input_options:
                         self._input_option_result = self._input_options[number_pressed]
 
     def handle_tick(self):
         self.clock.tick()
+        if self._waiting_simulation:
+            if self._simulation_time > VisualEngineConfig.SimulationTime:
+                self._waiting_simulation = False
+                self._simulation_time = 0
+            else:
+                self._simulation_time += self.clock.get_time() / 1000
+                alpha = self._simulation_time / VisualEngineConfig.SimulationTime
+                alpha = pygame.math.clamp(alpha, 0, 1)
+                for agent_visual in self.agent_visuals.values():
+                    agent_visual.update_simulation(alpha)
 
     def handle_single_draw(self):
         self.screen.fill(Color.White)
 
         # Note: Draw in layer order of back layer -> front layer
-        # drawing 
         self._draw_grid()
         
         self.graph_visual.draw_graph(self.screen)
 
         #for players in player_list:
-        
-        #for agent_visualization in agent_draw_list:
-        # 
+        self.draw_agents()
+
         self.draw_input_overlay()
 
         self.draw_hud()
@@ -156,6 +169,16 @@ class PygameVisualizationEngine(IVisualizationEngine):
         #     self.graph_visual.y_min,
         #     self.graph_visual.y_max
         # )
+
+    def draw_agents(self):
+        waiting_agent_visual = None
+        for agent_visual in self.agent_visuals.values():
+            agent_visual.draw_agent(self.screen, self.graph_visual.ScalePositionToScreen)
+            if agent_visual.name == self._waiting_agent_name:
+                waiting_agent_visual = agent_visual
+        
+        if waiting_agent_visual is not None:
+            waiting_agent_visual.draw_agent(self.screen, self.graph_visual.ScalePositionToScreen, True)
 
     def draw_input_overlay(self):
         if not self._waiting_user_input:
@@ -271,26 +294,23 @@ class PygameVisualizationEngine(IVisualizationEngine):
             agent_visual = self.agent_visuals[agent.name]
             agent_visual.set_postions(agent.prev_node_id, agent.current_node_id)
 
-    @property
-    def waiting_user_input(self):
-        return self._waiting_user_input
+    # @property
+    # def waiting_user_input(self):
+    #     return self._waiting_user_input
 
-    @property
-    def input_option_result(self):
-        return self._input_option_result
+    # @property
+    # def input_option_result(self):
+    #     return self._input_option_result
     
-    @property
-    def current_waiting_agent(self):
-        return self._current_waiting_agent
+    # @property
+    # def current_waiting_agent(self):
+    #     return self._current_waiting_agent
+    
+    # @property
+    # def waiting_simulation(self):
+    #     return self._waiting_simulation
 
-    def human_input(self, agent) -> int:
-        # state {current_pos neighbors....}
-        #draw the Graph
-        #draw an overaly on the node from state
-        # Draw the neighbor overle
-        # Input
-        # Clear any changes
-        # return Input_node
+    def human_input(self, agent_name, state: Dict[str, Any]) -> int:
         self._waiting_user_input = True
 
         def get_neighbours(state):
@@ -299,34 +319,47 @@ class PygameVisualizationEngine(IVisualizationEngine):
                     return data
                 
         # dict[int, node_id]
-        self._current_waiting_agent = agent
-        state = agent.get_state()
+        # self._current_waiting_agent = agent
+        # state = agent.get_state()
+        self._waiting_agent_name = agent_name
         options: list[int] = get_neighbours(state)
         self._input_options: dict[int, int] = {}
-        for i in range(1, min(len(options), 11)):
-            if i == 10:
-                self._input_options[0] = options[i]
+        for i in range(min(len(options), 11)):
+            # if i == 10:
+            #     self._input_options[0] = options[i]
             self._input_options[i] = options[i]
 
-        # self._processing_human_agent = True
-        # while self._processing_human_agent:
-        #     options = get_neighbours(state)
-        #     node = self.get_human_agent_input()
-        #     for event in pygame.event.get():
-        #         pressed_keys = pygame.key.get_pressed()
-        #         if pressed_keys[pygame.K_1]:
-        #             self._processing_human_agent = False
-        #             break
-        # # Return node id from neighbors or current node id
-        # return node
+        while self._waiting_user_input:
+            # still need to update the render
+            self.update()
+
+            result = self._input_option_result
+            if result is not None:
+                self.end_handle_human_input()
+                return result                
 
     def end_handle_human_input(self):
         self._waiting_user_input = False
         self._input_option_result = None
-        self._current_waiting_agent = None
+        self._waiting_agent_name = None
+        # self._current_waiting_agent = None
 
-    def start_simulation(self):
+    def simulate(self):
         self._waiting_simulation = True
+        for agent_name, agent_visual in self.agent_visuals.items():
+            agent = self.ctx.agent.get_agent(agent_name)
+            prev_node = self.ctx.graph.graph.get_node(agent.prev_node_id)
+            target_node = self.ctx.graph.graph.get_node(agent.current_node_id)
+            edges = self.ctx.graph.graph.get_edges()
+            current_edge = None
+            for key, edge in edges.items():
+                if edge.source == agent.prev_node_id and edge.target == agent.current_node_id:
+                    current_edge = edge
+
+            agent_visual.start_simulation_lerp((prev_node.x, prev_node.y), (target_node.x, target_node.y), current_edge.linestring if current_edge is not None else None)
+
+        while self._waiting_simulation:
+            self.update()
 
     def terminate(self):
         self.cleanup()

@@ -19,3 +19,7 @@ class Space:
     World = 0
     Screen = 1
     Viewport = 2
+
+
+class VisualEngineConfig:
+    SimulationTime = 2.0

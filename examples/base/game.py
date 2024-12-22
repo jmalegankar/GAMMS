@@ -81,37 +81,23 @@ def valid_step(ctx):
         if agent.current_node_id not in state[sensor_name]:
             agent.current_node_id = agent.prev_node_id
 
+agent_iter = None
 
 # Run the game
 while not ctx.is_terminated():
-    # turn_count += 1
-    # when waiting for human input, we don't want to update the agent
-    if ctx.visual.waiting_user_input:
-        # still need to update the render
-        ctx.visual.update()
-
-        result = ctx.visual.input_option_result
-        if result:
-            agent = ctx.visual.current_waiting_agent
-            state = agent.get_state()
-            state['action'] = result
-            agent.set_state()
-            ctx.visual.end_handle_human_input()
-
-        continue
-
     for agent in ctx.agent.create_iter():
         if agent.strategy is not None:
             agent.step()
         else:
-            # tell visual to start waiting for human input
-            ctx.visual.human_input(agent)
+            state = agent.get_state()
+            node = ctx.visual.human_input(agent.name, state)
+            state['action'] = node
+            agent.set_state()
 
     #valid_step(ctx)
     #agent_reset(ctx)
-    # break
     
-    ctx.visual.update()
+    ctx.visual.simulate()
 
     # ctx.save_frame()
     # rule_terminate(ctx)
