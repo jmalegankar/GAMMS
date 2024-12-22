@@ -188,7 +188,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         top += size_y + 10
         size_x, size_y = self.render_text(f"Camera size: {self._camera.size:.2f}", 10, top, Space.Screen)
         top += size_y + 10
-        size_x, size_y = self.render_text("Current turn: Red", 10, top, Space.Screen)
+        size_x, size_y = self.render_text(f"Current turn: {self._waiting_agent_name}", 10, top, Space.Screen)
 
     def cleanup(self):
         pygame.quit()
