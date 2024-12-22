@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Graph based Adversarial Multiagent Modelling Simulator"
 dependencies = [
     "networkx",
+    "pygame",
     "shapely",
 ]
 
@@ -18,11 +19,6 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
-gui = [
-    "matplotlib",
-    "pygame"
-]
-
 osm = [
     "osmnx"
 ]
