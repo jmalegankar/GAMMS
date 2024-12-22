@@ -1,21 +1,18 @@
-import gamms.AgentEngine.agent_engine as _agent_engine
-import gamms.SensorEngine.sensor_engine as _sensor_engine
-import gamms.GraphEngine.graph_engine as _graph_engine
-import gamms.VisualizationEngine as _visual_engine
+import gamms.AgentEngine.agent_engine as agent
+import gamms.SensorEngine.sensor_engine as sensor
+import gamms.GraphEngine.graph_engine as graph
+import gamms.VisualizationEngine as visual
 from gamms.context import Context
-
-import gamms.visual
-
 from enum import Enum
 
 def create_context(
-    vis_engine: Enum = gamms.visual.Engine.NO_VIS,
+    vis_engine: Enum = visual.Engine.NO_VIS,
 ) -> Context:
     ctx = Context()
-    if vis_engine == gamms.visual.Engine.NO_VIS:
-        visual_engine = None
-    elif vis_engine == gamms.visual.Engine.PYGAME:
-        visual_engine = _visual_engine.PygameVisualizationEngine(ctx)
+    if vis_engine == visual.Engine.NO_VIS:
+        visual_engine = visual.no_engine.NoEngine(ctx)
+    elif vis_engine == visual.Engine.PYGAME:
+        visual_engine = visual.pygame_engine.PygameVisualizationEngine(ctx)
     else:
         raise NotImplementedError(f"Visualization engine {vis_engine} not implemented")
     
@@ -28,6 +25,3 @@ def create_context(
     ctx.sensor_engine = sensor_engine
     ctx.set_alive()
     return ctx
-
-
-from gamms.typing.sensor_engine import SensorType as sensors

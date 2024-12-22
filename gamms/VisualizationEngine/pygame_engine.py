@@ -1,15 +1,14 @@
 from gamms.typing import IVisualizationEngine
-from gamms.VisualizationEngine.constants import *
+from gamms.VisualizationEngine import Color, Space
 from gamms.VisualizationEngine.camera import Camera
 from gamms.VisualizationEngine.graph_visual import GraphVisual
 from gamms.VisualizationEngine.agent_visual import AgentVisual
 from gamms.context import Context
-import pygame
 from gamms.typing.sensor_engine import SensorType
 
-from typing import Dict, Any, TYPE_CHECKING
-if TYPE_CHECKING:
-    from gamms.typing.agent_engine import IAgent
+import pygame
+
+from typing import Dict, Any
 
 class PygameVisualizationEngine(IVisualizationEngine):
     _width: int
@@ -19,13 +18,14 @@ class PygameVisualizationEngine(IVisualizationEngine):
     _default_font: pygame.font.Font
     _camera: Camera
 
-    def __init__(self, ctx, tick_callback = None, width=1980, height=1080):
+    def __init__(self, ctx, tick_callback = None, width=1980, height=1080, simulation_time_constant=2.0):
         super().__init__(tick_callback)
 
         pygame.init()
         self.ctx: Context = ctx
         self._width = width
         self._height = height
+        self._sim_time_constant = simulation_time_constant
         self._graph_visual = None
         self._agent_visuals: dict[str, AgentVisual] = {}
         self._zoom = 1.0
@@ -46,21 +46,11 @@ class PygameVisualizationEngine(IVisualizationEngine):
     
     @property
     def height(self):
-        return self._height
+        return self._height    
     
     def set_graph_visual(self, **kwargs):
         self._graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
         self._graph_visual.setCamera(self._camera)
-
-        # Agent Engine -> Managing the agents
-        # -- [Agents.id]
-
-        # Visualization Engine -> Managing the map
-        # -- Graph Engine
-        # -- 
-        # -- handle_single_draw ()
-        # ---- Graph_visual <- 300
-        # ---- Agent_visual_componet[Agents.id]
 
         print("Successfully set graph visual")
     
@@ -139,12 +129,12 @@ class PygameVisualizationEngine(IVisualizationEngine):
     def handle_tick(self):
         self._clock.tick()
         if self._waiting_simulation:
-            if self._simulation_time > VisualEngineConfig.SimulationTime:
+            if self._simulation_time > self._sim_time_constant:
                 self._waiting_simulation = False
                 self._simulation_time = 0
             else:
                 self._simulation_time += self._clock.get_time() / 1000
-                alpha = self._simulation_time / VisualEngineConfig.SimulationTime
+                alpha = self._simulation_time / self._sim_time_constant
                 alpha = pygame.math.clamp(alpha, 0, 1)
                 for agent_visual in self._agent_visuals.values():
                     agent_visual.update_simulation(alpha)

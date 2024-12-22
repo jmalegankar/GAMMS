@@ -84,8 +84,6 @@ def valid_step(ctx):
         if agent.current_node_id not in state[sensor_name]:
             agent.current_node_id = agent.prev_node_id
 
-agent_iter = None
-
 # Run the game
 while not ctx.is_terminated():
     for agent in ctx.agent.create_iter():

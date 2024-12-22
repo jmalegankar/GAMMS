@@ -13,40 +13,40 @@ graph_path = 'graph.pkl'
 # Sensor configuration
 sensor_config = {
     'neigh_0': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_1': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_2': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_3': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_4': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_5': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_6': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_7': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_8': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'neigh_9': {
-        'type': gamms.sensors.NEIGHBOR,
+        'type': gamms.sensor.SensorType.NEIGHBOR,
     },
     'map': {
-        'type': gamms.sensors.MAP,
+        'type': gamms.sensor.SensorType.MAP,
     },
     'agent': {
-        'type': gamms.sensors.AGENT,
+        'type': gamms.sensor.SensorType.AGENT,
     }
 }
 
@@ -115,103 +115,42 @@ graph_vis_config = {
 agent_vis_config = {
     'agent_0': {
         'color': 'blue',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_1': {
         'color': 'blue',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_2': {
         'color': 'blue',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_3': {
         'color': 'blue',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_4': {
         'color': 'blue',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_5': {
         'color': 'red',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_6': {
         'color': 'red',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_7': {
         'color': 'red',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_8': {
         'color': 'red',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     },
     'agent_9': {
         'color': 'red',
-        'size': 500,
-        'shape': "Triangle",
+        'size': 8,
     }
-# agent_vis_config = {
-#     'agent_0': {
-#         'color': 'blue',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_1': {
-#         'color': 'blue',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_2': {
-#         'color': 'blue',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_3': {
-#         'color': 'blue',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_4': {
-#         'color': 'blue',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_5': {
-#         'color': 'red',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_6': {
-#         'color': 'red',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_7': {
-#         'color': 'red',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_8': {
-#         'color': 'red',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     },
-#     'agent_9': {
-#         'color': 'red',
-#         'size': 500,
-#         'shape': gamms.visual.shapes.Triangle,
-#     }
 }
