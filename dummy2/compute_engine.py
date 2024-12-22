@@ -77,41 +77,5 @@ class ComputeEngine(IComputeEngine):
     def wait(self, task: Task) -> None:
         self._engine.wait(task)
         
-    def terminate(self):
+    def shutdown(self):
         self._engine.shutdown()
-
-__all__ = ["ComputeEngine", "Task", "TaskStatus"]
-
-if __name__ == "__main__":
-    import time
-    def io_func():
-        time.sleep(5)
-    
-    def pathological_function():
-        i = 0
-        while i < 5:
-            time.sleep(1)
-            i += 1
-    
-    engine = ComputeEngine()
-    print("Starting IO tasks")
-    t = time.time()
-    tasks = []
-    for _ in range(100):
-        task = Task(io_func)
-        engine.submit(task)
-        tasks.append(task)
-    for task in tasks:
-        engine.wait(task)
-    print("IO tasks completed in", time.time() - t)
-    print("Starting pathological tasks")
-    t = time.time()
-    tasks = []
-    for _ in range(100):
-        task = Task(pathological_function)
-        engine.submit(task)
-        tasks.append(task)
-    for task in tasks:
-        engine.wait(task)
-    print("Pathological tasks completed in", time.time() - t)
-    engine.terminate()

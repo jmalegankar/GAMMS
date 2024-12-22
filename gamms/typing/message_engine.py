@@ -25,3 +25,7 @@ class IMessageEngine(ABC):
     @abstractmethod
     def list_active_channels(self) -> List[str]:
         pass
+
+    @abstractmethod
+    def terminate(self) -> None:
+        pass

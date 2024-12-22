@@ -22,3 +22,8 @@ class InternalContext(IInternalContext):
     @property
     def message(self) -> IMessageEngine:
         return self.message_engine
+    
+    def terminate(self):
+        self.compute_engine.terminate()
+        self.memory_engine.terminate()
+        self.message_engine.terminate()

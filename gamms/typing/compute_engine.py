@@ -27,5 +27,5 @@ class IComputeEngine(ABC):
         pass
 
     @abstractmethod
-    def shutdown(self) -> None:
+    def terminate(self) -> None:
         pass

@@ -18,3 +18,7 @@ class IInternalContext(ABC):
     @abstractmethod
     def message(self) -> IMessageEngine:
         pass
+
+    @abstractmethod
+    def terminate(self):
+        pass

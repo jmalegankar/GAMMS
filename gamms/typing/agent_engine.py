@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
-
-#CAN CHANGE
 class IAgent(ABC):
+    name: str
     @abstractmethod
     def step(self):
         pass
@@ -11,40 +9,30 @@ class IAgent(ABC):
     def get_state(self):
         pass
     @abstractmethod
-    def get_action(self):
-        pass
-    @abstractmethod
-    def set_state(self, state: Any):
-        pass
-    @abstractmethod
-    def set_action(self, action: Any):
-        pass
-    @abstractmethod
-    def get_reward(self):
-        pass
-    @abstractmethod
-    def set_reward(self, reward: Any):
-        pass
-    @abstractmethod
-    def get_done(self):
-        pass
-    @abstractmethod
-    def set_done(self, done: Any):
-        pass
-    @abstractmethod
-    def get_info(self):
-        pass
-    @abstractmethod
-    def set_info(self, info: Any):
+    def set_state(self, state):
         pass
 
+    @abstractmethod
+    def register_sensor(self, name, sensor):
+        pass
 
-
+    @abstractmethod
+    def register_strategy(self, strategy):
+        pass
 
 class IAgentEngine(ABC):
     @abstractmethod
-    def step_all_agents(self):
+    def create_iter(self):
         pass
+    
     @abstractmethod
-    def get_all_states(self):
+    def create_agent(self, start_node_id: int, **kwargs):
+        pass
+
+    @abstractmethod
+    def terminate(self):
+        pass
+
+    @abstractmethod
+    def get_agent(self, name: str) -> IAgent:
         pass

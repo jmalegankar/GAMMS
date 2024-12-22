@@ -30,3 +30,7 @@ class IMemoryEngine(ABC):
     @abstractmethod
     def load_store(self, name: str) -> IStore:
         pass
+
+    @abstractmethod
+    def terminate(self) -> None:
+        pass
