@@ -6,21 +6,12 @@ from gamms.VisualizationEngine.agent_visual import AgentVisual
 from gamms.context import Context
 from gamms.typing.sensor_engine import SensorType
 
-import pygame
-
 from typing import Dict, Any
 
+import pygame        
+
 class PygameVisualizationEngine(IVisualizationEngine):
-    _width: int
-    _height: int
-    _screen: pygame.Surface
-    _clock: pygame.time.Clock
-    _default_font: pygame.font.Font
-    _camera: Camera
-
     def __init__(self, ctx, tick_callback = None, width=1980, height=1080, simulation_time_constant=2.0):
-        super().__init__(tick_callback)
-
         pygame.init()
         self.ctx: Context = ctx
         self._width = width
@@ -39,6 +30,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._waiting_agent_name = None
         self._waiting_simulation = False
         self._simulation_time = 0
+        self._will_quit = False
 
     @property
     def width(self):
@@ -114,7 +106,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
                         self._zoom /= 1.05
                         self._zoom = self._graph_visual.setZoom(self._zoom)
             if event.type == pygame.QUIT:
-                self.will_quit = True
+                self._will_quit = True
             if event.type == pygame.VIDEORESIZE:
                 self._width = event.w
                 self._height = event.h
@@ -256,8 +248,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self.cleanup()
 
     def update(self):
-        if self.will_quit:
-            self.ctx.terminate()
+        if self._will_quit:
             return
         
         self.handle_input()

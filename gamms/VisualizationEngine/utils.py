@@ -1,4 +1,4 @@
-from gamms.VisualizationEngine.constants import Color
+from gamms.VisualizationEngine import Color
 
 
 def string_to_color(color_string: str) -> Color:

@@ -1,8 +1,3 @@
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from visualization_engine import PygameVisualizationEngine
-
 class Camera:
     def __init__(self, visualization_engine: "PygameVisualizationEngine", x=0, y=0, size=5):
         self._x = x

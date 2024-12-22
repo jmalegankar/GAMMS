@@ -24,3 +24,20 @@ class Space:
     World = 0
     Screen = 1
     Viewport = 2
+
+import sys
+import importlib.util
+
+def lazy(fullname):
+  try:
+    return sys.modules[fullname]
+  except KeyError:
+    spec = importlib.util.find_spec(fullname)
+    module = importlib.util.module_from_spec(spec)
+    loader = importlib.util.LazyLoader(spec.loader)
+    # Make module with proper locking and get it inserted into sys.modules.
+    loader.exec_module(module)
+    return module
+
+from gamms.VisualizationEngine import agent_visual, graph_visual
+from gamms.VisualizationEngine import no_engine, pygame_engine

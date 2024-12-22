@@ -40,13 +40,14 @@ class GraphVisual:
 
         map_position = (screen_scale * (position[0] - graph_center[0]),screen_scale * (position[1] - graph_center[1]))
         map_position = self.camera.world_to_screen(map_position[0] + self.camera.x, map_position[1] + self.camera.y)
+        #map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
         return map_position
 
     def draw_node(self, screen, node, color=(173, 255, 47)):
         # """Draw a node as a circle with a light greenish color."""
         position = (node.x, node.y)
         (x, y) = self.ScalePositionToScreen(position)
-        pygame.draw.circle(screen, color, (int(x), int(y)), 4)
+        pygame.draw.circle(screen, color, (int(x), int(y)), 4)  # Light greenish color
 
     def draw_edge(self, screen, edge):
         """Draw an edge as a curve or straight line based on the linestring."""

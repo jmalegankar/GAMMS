@@ -16,9 +16,9 @@ def create_context(
     else:
         raise NotImplementedError(f"Visualization engine {vis_engine} not implemented")
     
-    graph_engine = _graph_engine.GraphEngine(ctx)
-    agent_engine = _agent_engine.AgentEngine(ctx)
-    sensor_engine = _sensor_engine.SensorEngine(ctx)
+    graph_engine = graph.GraphEngine(ctx)
+    agent_engine = agent.AgentEngine(ctx)
+    sensor_engine = sensor.SensorEngine(ctx)
     ctx.agent_engine = agent_engine
     ctx.graph_engine = graph_engine
     ctx.visual_engine = visual_engine
