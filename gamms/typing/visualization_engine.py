@@ -7,7 +7,7 @@ class IVisualizationEngine(ABC):
     The abstract interface for the visualization engine.
     """
 
-    tick_callback: Callable[[float], None]
+    _tick_callback: Callable[[float], None]
     """
     This will be called every tick of the game loop. You can use it for tick callback for other systems.
 
@@ -23,7 +23,7 @@ class IVisualizationEngine(ABC):
     def __init__(self, tick_callback: Callable[[float], None]):
         super().__init__()
 
-        self.tick_callback: Callable[[float], None] = tick_callback
+        self._tick_callback: Callable[[float], None] = tick_callback
         self.will_quit: bool = False
         
 

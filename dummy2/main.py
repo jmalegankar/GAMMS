@@ -22,8 +22,8 @@ if __name__ == "__main__":
 
     # # # # Initialize and run the visualization engine
     visualization = PygameVisualizationEngine(None, graph_visual, None)
-    camera = visualization.camera
-    screen = visualization.screen
+    # camera = visualization.camera
+    # screen = visualization.screen
     # while True:
     #     screen.fill((255, 255, 255))
     #     visualization.graph_visual.draw_graph(screen)

@@ -7,6 +7,7 @@ import networkx as nx
 from shapely.geometry import LineString, Point
 from enum import Enum
 
+from copy import deepcopy as copy
 class OSMType(Enum):
     WALK = 0
     BIKE = 1
@@ -102,8 +103,12 @@ def create_osm_graph(
         u = node_map[u]
         v = node_map[v]
         nxg.add_edge(u, v, id=count, **data)
-        # if osm_type == OSMType.WALK:
-        #     count += 1
-        #     nxg.add_edge(v, u, id=count, **data)
+        if osm_type == OSMType.WALK:
+            count += 1
+            line = data.get('linestring')
+            data = copy(data)
+            if line is not None:
+                data['linestring'] = LineString(line.coords[::-1])
+            nxg.add_edge(v, u, id=count, **data)
         count += 1
     return nxg

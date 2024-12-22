@@ -22,6 +22,17 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             }
+        },
+        {
+            "name": "Create Graph",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/base/create_graph.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/examples/base",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         }
     ]
 }

@@ -47,7 +47,7 @@ class Agent(IAgent):
 class AgentEngine(IAgentEngine):
     def __init__(self, ctx: IContext):
         self.ctx = ctx
-        self.agents: Dict[str, IAgent] = []
+        self.agents: Dict[str, IAgent] = {}
 
     def create_iter(self):
         return self.agents.values()

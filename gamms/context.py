@@ -53,7 +53,8 @@ class Context(IContext):
     
     def terminate(self):
         if self._alive:
-            self.internal_context.terminate()
+            if self.internal_context is not None:
+                self.internal_context.terminate()
             self.agent_engine.terminate()
             self.sensor_engine.terminate()
             self.graph_engine.terminate()
