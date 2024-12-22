@@ -31,9 +31,12 @@ for name, agent in agent_config.items():
 
 # Create the strategies
 strategies = {}
+
+# Blue is human so do not set strategy
 # strategies.update(blue_strategy.map_strategy(
 #     {name: val for name, val in agent_config.items() if val['meta']['team'] == 0}
 # ))
+
 strategies.update(red_strategy.map_strategy(
     {name: val for name, val in agent_config.items() if val['meta']['team'] == 1}
 ))

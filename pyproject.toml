@@ -5,7 +5,6 @@ description = "Graph based Adversarial Multiagent Modelling Simulator"
 dependencies = [
     "networkx",
     "shapely",
-
 ]
 
 requires = [
