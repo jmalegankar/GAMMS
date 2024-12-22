@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "gamms"
 version = "0.1.0"
@@ -13,10 +17,6 @@ requires = [
 ]
 
 authors = ["GAMMS Developers"]
-
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
 osm = [
