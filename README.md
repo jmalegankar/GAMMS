@@ -43,11 +43,11 @@ The agent configuration contains the team id as meta data, the sensors attached 
 
 Remaning part is only for defining the window size and agent rendering information for the visualization engine.
 
-## Graph Creation
+### Graph Creation
 
 This file is there for completeness. It is a vanialla example of how to convert a real world location into a networkx graph and dump it.
 
-## Game File
+### Game File
 
 Any game starts with first creating a gamms context. The example file shows how to attach a networkx graph to the context (internally its no longer a networkx graph). Next step is to iterate over the sensor and agent config, and load them in the context.
 
