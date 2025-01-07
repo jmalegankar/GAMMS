@@ -36,3 +36,7 @@ class IAgentEngine(ABC):
     @abstractmethod
     def get_agent(self, name: str) -> IAgent:
         pass
+
+    @abstractmethod
+    def delete_agent(self, name: str) -> None:
+        pass

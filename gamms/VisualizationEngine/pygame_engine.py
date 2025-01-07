@@ -128,8 +128,8 @@ class PygameVisualizationEngine(IVisualizationEngine):
                 self._simulation_time += self._clock.get_time() / 1000
                 alpha = self._simulation_time / self._sim_time_constant
                 alpha = pygame.math.clamp(alpha, 0, 1)
-                for agent_visual in self._agent_visuals.values():
-                    agent_visual.update_simulation(alpha)
+                for agent in self.ctx.agent.create_iter():
+                    self._agent_visuals[agent.name].update_simulation(alpha)
 
     def handle_single_draw(self):
         self._screen.fill(Color.White)
@@ -143,7 +143,8 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
     def draw_agents(self):
         waiting_agent_visual = None
-        for agent_visual in self._agent_visuals.values():
+        for agent in self.ctx.agent.create_iter():
+            agent_visual = self._agent_visuals[agent.name]
             agent_visual.draw_agent(self._screen, self._graph_visual.ScalePositionToScreen)
             if agent_visual.name == self._waiting_agent_name:
                 waiting_agent_visual = agent_visual
@@ -291,17 +292,16 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
     def simulate(self):
         self._waiting_simulation = True
-        for agent_name, agent_visual in self._agent_visuals.items():
-            agent = self.ctx.agent.get_agent(agent_name)
+        for agent in self.ctx.agent.create_iter():
             prev_node = self.ctx.graph.graph.get_node(agent.prev_node_id)
             target_node = self.ctx.graph.graph.get_node(agent.current_node_id)
             edges = self.ctx.graph.graph.get_edges()
             current_edge = None
-            for key, edge in edges.items():
+            for _, edge in edges.items():
                 if edge.source == agent.prev_node_id and edge.target == agent.current_node_id:
                     current_edge = edge
-
-            agent_visual.start_simulation_lerp((prev_node.x, prev_node.y), (target_node.x, target_node.y), current_edge.linestring if current_edge is not None else None)
+            
+            self._agent_visuals[agent.name].start_simulation_lerp((prev_node.x, prev_node.y), (target_node.x, target_node.y), current_edge.linestring if current_edge is not None else None)
 
         while self._waiting_simulation:
             self.update()
