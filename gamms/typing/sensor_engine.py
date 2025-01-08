@@ -8,9 +8,12 @@ class SensorType(Enum):
     Enumeration of different sensor types.
 
     Attributes:
-        NEIGHBOR (int): Sensor type for detecting neighboring entities.
-        MAP (int): Sensor type for map-related data.
-        AGENT (int): Sensor type for agent-specific data.
+        NEIGHBOR (Enum): Sensor type for detecting neighboring entities.
+            Data Representation (`List[int]`): List of node identifiers representing neighbors.
+        MAP (Enum): Sensor type for map-related data.
+            Data Representation (`Tuple[Dict[int, Node], Dict[int, OSMEdge]`): Tuple containing node and edge data.
+        AGENT (Enum): Sensor type for agent locations.
+            Data Representation (`Dict[str, int]`): Dictionary mapping agent names to node identifiers.
     """
     NEIGHBOR = 1
     MAP = 2
