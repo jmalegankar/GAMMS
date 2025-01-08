@@ -70,3 +70,8 @@ class AgentEngine(IAgentEngine):
             return self.agents[name]
         else:
             raise ValueError(f"Agent {name} not found.")
+    
+    def delete_agent(self, name) -> None:
+        if name not in self.agents:
+            print("Warning: Deleting non-existent agent")
+        self.agents.pop(name, None)
