@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Iterable, Dict, Any
 
 class IAgent(ABC):
     """
@@ -21,12 +22,12 @@ class IAgent(ABC):
         pass
 
     @abstractmethod
-    def get_state(self):
+    def get_state(self) -> Dict[str, Any]:
         """
         Retrieve the current state of the agent.
 
         Returns:
-            Any: The current state data of the agent, structure depends on implementation.
+            Dict[str, Any]: The current state data of the agent, structure depends on implementation.
         """
         pass
 
@@ -36,7 +37,7 @@ class IAgent(ABC):
         Update the agent's state.
 
         Args:
-            state (Any): The new state data to set for the agent.
+            state (Dict[str, Any]): The new state data to set for the agent.
         """
         pass
 
@@ -49,7 +50,7 @@ class IAgent(ABC):
 
         Args:
             name (str): The unique name identifier for the sensor.
-            sensor (Any): The sensor instance or object to be registered.
+            sensor (ISensor): The sensor instance or object to be registered.
         """
         pass
 
@@ -61,7 +62,7 @@ class IAgent(ABC):
         Strategies define the decision-making or action-planning mechanisms for the agent.
 
         Args:
-            strategy (Any): The strategy instance or object to be registered.
+            strategy (Callable[[Dict[str, Any]], None]): The strategy instance or object to be registered.
         """
         pass
 
@@ -75,17 +76,17 @@ class IAgentEngine(ABC):
     """
 
     @abstractmethod
-    def create_iter(self):
+    def create_iter(self) -> Iterable[IAgent]:
         """
         Create an iterator for processing agent steps.
 
         Returns:
-            Any: An iterator object that manages the execution flow of agent steps.
+            Iterable[IAgent]: An iterator object over all agents.
         """
         pass
 
     @abstractmethod
-    def create_agent(self, start_node_id: int, **kwargs):
+    def create_agent(self, start_node_id: int, **kwargs) -> IAgent:
         """
         Instantiate a new agent within the engine.
 

@@ -10,7 +10,7 @@ class NeighborSensor(ISensor):
         self.edges = edges
         self.data = []
     
-    def sense(self, node_id):
+    def sense(self, node_id: int) -> None:
         nearest_neighbors = {node_id,}
         for edge in self.edges.values():
             if edge.source == node_id:
@@ -18,7 +18,7 @@ class NeighborSensor(ISensor):
                         
         self.data = list(nearest_neighbors)
     
-    def update(self, data: Dict[str, Any]):
+    def update(self, data: Dict[str, Any]) -> None:
         return 
 
 class MapSensor(ISensor):
@@ -29,10 +29,10 @@ class MapSensor(ISensor):
         self.edges = edges
         self.data = ((), ())
     
-    def sense(self, node_id):
+    def sense(self, node_id: int) -> None:
         self.data = (self.nodes, self.edges)
     
-    def update(self, data: Dict[str, Any]):
+    def update(self, data: Dict[str, Any]) -> None:
         return
     
 class AgentSensor(ISensor):
@@ -42,13 +42,13 @@ class AgentSensor(ISensor):
         self.agent = agent
         self.data = {}
     
-    def sense(self, node_id):
+    def sense(self, node_id: int) -> None:
         agent_data = {}
         for agent in self.agent.create_iter():
             agent_data[agent.name] = agent.current_node_id
         self.data = agent_data
     
-    def update(self, data: Dict[str, Any]):
+    def update(self, data: Dict[str, Any]) -> None:
         return 
     
 class SensorEngine(ISensorEngine):
