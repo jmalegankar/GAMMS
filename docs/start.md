@@ -12,39 +12,40 @@ Before installing **Gamms**, ensure that [pip](https://pypi.org/project/pip/) is
 
 Once pip is set up, use the appropriate commands below for your operating system.
 
-- On **Windows**:
-```sh
-python -m pip install gamms
-```
+=== "Mac/Linux"
+   ```sh
+   python3 -m pip install gamms
+   ```
 
-   - On **Mac/Linux**:
-```sh
-python3 -m pip install gamms
-```
+=== "Windows"
+   ```sh
+   python -m pip install gamms
+   ```
 
 ## Creating a Project Folder and Virtual Environment
 
 1. **Create a new folder** in the directory where you want your project to live. We'll name it `gamms`:
-
+   ```sh
    mkdir gamms
    cd gamms
-
+   ```
 2. **Create a Python virtual environment** within this folder. You can do this using `python` or `python3`, depending on your system:
-
+   ```sh
    python -m venv venv
+   ```
 
    This command will create a subfolder named `venv` that contains your virtual environment files.
 
 3. **Activate the virtual environment**:
 
-   - On **Windows**:
-```sh
-venv\Scripts\activate
-```
-   - On **Mac/Linux**:
-```sh
-source venv/bin/activate
-```
+=== "Mac/Linux"
+   ```sh
+   source venv/bin/activate
+   ```
+=== "Windows"
+   ```cmd
+   venv\Scripts\activate
+   ```
 
 4. **Install Gamms** within the virtual environment:
 ```sh
@@ -62,17 +63,18 @@ Once these steps are completed, you will have **Gamms** installed in a clean vir
 ## Installing Git, Wget, and Cloning Examples
 
 ### 1. **Ensure Git and Wget are installed** on your system.
-   - If you're missing Git or Wget, install them using your package manager or from the official websites:
-     - **Windows**:
-       - [Git for Windows](https://git-scm.com/download/win)
-       - [Wget for Windows](https://eternallybored.org/misc/wget/)
-     - **Mac**:
-       - [Git via Homebrew](https://brew.sh/)
-       - [Wget via Homebrew](https://brew.sh/)
-     - **Linux**:
-       - `sudo apt-get install git wget` (Debian/Ubuntu)
-       - `sudo dnf install git wget` (Fedora)
-       - `sudo pacman -S git wget` (Arch)
+If you're missing Git or Wget, install them using your package manager or from the official websites:
+
+=== "Mac"
+   - [Git via Homebrew](https://brew.sh/)
+   - [Wget via Homebrew](https://brew.sh/)
+=== "Linux"
+   - `sudo apt-get install git wget` (Debian/Ubuntu)
+   - `sudo dnf install git wget` (Fedora)
+   - `sudo pacman -S git wget` (Arch)
+=== "Windows"
+   - [Git for Windows](https://git-scm.com/download/win)
+   - [Wget for Windows](https://eternallybored.org/misc/wget/)
 
 ### 2. **Install Git using pip (if you prefer Python tools)**:
 ```sh
