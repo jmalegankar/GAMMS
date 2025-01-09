@@ -12,17 +12,21 @@ Before installing **Gamms**, ensure that [pip](https://pypi.org/project/pip/) is
 
 Once pip is set up, use the appropriate commands below for your operating system.
 
-=== "Mac/Linux"
-   ```sh
-   python3 -m pip install gamms
-   ```
+### Installing Git
 
+=== "Mac"
+   - [Git via Homebrew](https://brew.sh/)
+   - [Wget via Homebrew](https://brew.sh/)
+=== "Linux"
+   - `sudo apt-get install git wget` (Debian/Ubuntu)
+   - `sudo dnf install git wget` (Fedora)
+   - `sudo pacman -S git wget` (Arch)
 === "Windows"
-   ```sh
-   python -m pip install gamms
-   ```
+   - [Git for Windows](https://git-scm.com/download/win)
+   - [Wget for Windows](https://eternallybored.org/misc/wget/)
 
-## Creating a Project Folder and Virtual Environment
+
+### Creating a Project Folder and Virtual Environment
 
 1. **Create a new folder** in the directory where you want your project to live. We'll name it `gamms`:
    ```sh
@@ -49,7 +53,7 @@ Once pip is set up, use the appropriate commands below for your operating system
 
 4. **Install Gamms** within the virtual environment:
 ```sh
-python -m pip install gamms
+python -m pip install git+https://github.com/GAMMSim/gamms.git
 ```
 5. **Verify your installation**:
 ```py
@@ -60,33 +64,19 @@ python -m pip install gamms
 Once these steps are completed, you will have **Gamms** installed in a clean virtual environment. Remember to activate the virtual environment (step 3) whenever you want to work on your project.
 
 
-## Installing Git, Wget, and Cloning Examples
+## Wget, and Cloning Examples
 
-### 1. **Ensure Git and Wget are installed** on your system.
-If you're missing Git or Wget, install them using your package manager or from the official websites:
-
-=== "Mac"
-   - [Git via Homebrew](https://brew.sh/)
-   - [Wget via Homebrew](https://brew.sh/)
-=== "Linux"
-   - `sudo apt-get install git wget` (Debian/Ubuntu)
-   - `sudo dnf install git wget` (Fedora)
-   - `sudo pacman -S git wget` (Arch)
-=== "Windows"
-   - [Git for Windows](https://git-scm.com/download/win)
-   - [Wget for Windows](https://eternallybored.org/misc/wget/)
-
-### 2. **Install Git using pip (if you prefer Python tools)**:
+### 1. **Install Git using pip (if you prefer Python tools)**:
 ```sh
 python -m pip install git
 ```
 
-### 3. **Install Wget using pip (if you prefer Python tools)**:
+### 2. **Install Wget using pip (if you prefer Python tools)**:
 ```sh
 python -m pip install wget
 ```
 
-### 4. Cloning or Downloading the `examples` Directory
+### 3. Cloning or Downloading the `examples` Directory
 
 **Clone or download the `examples` directory** from [GAMMSim/gamms](https://github.com/GAMMSim/gamms/tree/main/examples).
 
@@ -104,7 +94,7 @@ mv gamms-main/examples examples
 rm -rf gamms-main main.zip
 ```
 
-### 5. Running `create_graph.py`
+### 4. Running `create_graph.py`
 
 #### **Execute** the script:
 ```sh
