@@ -427,9 +427,19 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation and Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Git
+    </span>
+  </a>
+  
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#creating-a-project-folder-and-virtual-environment" class="md-nav__link">
     <span class="md-ellipsis">
       Creating a Project Folder and Virtual Environment
@@ -437,52 +447,48 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#installing-git-wget-and-cloning-examples" class="md-nav__link">
+  <a href="#wget-and-cloning-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Installing Git, Wget, and Cloning Examples
+      Wget, and Cloning Examples
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installing Git, Wget, and Cloning Examples">
+    <nav class="md-nav" aria-label="Wget, and Cloning Examples">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-ensure-git-and-wget-are-installed-on-your-system" class="md-nav__link">
+  <a href="#1-install-git-using-pip-if-you-prefer-python-tools" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Ensure Git and Wget are installed on your system.
+      1. Install Git using pip (if you prefer Python tools):
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-install-git-using-pip-if-you-prefer-python-tools" class="md-nav__link">
+  <a href="#2-install-wget-using-pip-if-you-prefer-python-tools" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Install Git using pip (if you prefer Python tools):
+      2. Install Wget using pip (if you prefer Python tools):
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-install-wget-using-pip-if-you-prefer-python-tools" class="md-nav__link">
+  <a href="#3-cloning-or-downloading-the-examples-directory" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Install Wget using pip (if you prefer Python tools):
+      3. Cloning or Downloading the examples Directory
     </span>
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-cloning-or-downloading-the-examples-directory" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Cloning or Downloading the examples Directory
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Cloning or Downloading the examples Directory">
+    <nav class="md-nav" aria-label="3. Cloning or Downloading the examples Directory">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -509,13 +515,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-running-create_graphpy" class="md-nav__link">
+  <a href="#4-running-create_graphpy" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Running create_graph.py
+      4. Running create_graph.py
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. Running create_graph.py">
+    <nav class="md-nav" aria-label="4. Running create_graph.py">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -810,62 +816,8 @@
 <h2 id="installation-and-setup">Installation and Setup<a class="headerlink" href="#installation-and-setup" title="Permanent link">&para;</a></h2>
 <p>Before installing <strong>Gamms</strong>, ensure that <a href="https://pypi.org/project/pip/">pip</a> is installed. Most Python distributions include pip by default; if you need to install it separately, follow the instructions on the pip documentation page.</p>
 <p>Once pip is set up, use the appropriate commands below for your operating system.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Mac/Linux</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gamms
-</span></code></pre></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Windows</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gamms
-</span></code></pre></div>
-<h2 id="creating-a-project-folder-and-virtual-environment">Creating a Project Folder and Virtual Environment<a class="headerlink" href="#creating-a-project-folder-and-virtual-environment" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Create a new folder</strong> in the directory where you want your project to live. We'll name it <code>gamms</code>:
-   <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mkdir<span class="w"> </span>gamms
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>gamms
-</span></code></pre></div></li>
-<li><strong>Create a Python virtual environment</strong> within this folder. You can do this using <code>python</code> or <code>python3</code>, depending on your system:
-   <div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
-</span></code></pre></div></li>
-</ol>
-<p>This command will create a subfolder named <code>venv</code> that contains your virtual environment files.</p>
-<ol>
-<li><strong>Activate the virtual environment</strong>:</li>
-</ol>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Mac/Linux</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate
-</span></code></pre></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Windows</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>venv\Scripts\activate
-</span></code></pre></div>
-<ol>
-<li><strong>Install Gamms</strong> within the virtual environment:
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gamms
-</span></code></pre></div></li>
-<li><strong>Verify your installation</strong>:
-<div class="language-py highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>   <span class="kn">import</span> <span class="nn">gamms</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gamms version:&quot;</span><span class="p">,</span> <span class="n">gamms</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-</span></code></pre></div></li>
-</ol>
-<p>Once these steps are completed, you will have <strong>Gamms</strong> installed in a clean virtual environment. Remember to activate the virtual environment (step 3) whenever you want to work on your project.</p>
-<h2 id="installing-git-wget-and-cloning-examples">Installing Git, Wget, and Cloning Examples<a class="headerlink" href="#installing-git-wget-and-cloning-examples" title="Permanent link">&para;</a></h2>
-<h3 id="1-ensure-git-and-wget-are-installed-on-your-system">1. <strong>Ensure Git and Wget are installed</strong> on your system.<a class="headerlink" href="#1-ensure-git-and-wget-are-installed-on-your-system" title="Permanent link">&para;</a></h3>
-<p>If you're missing Git or Wget, install them using your package manager or from the official websites:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:1"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Mac</label></div>
+<h3 id="installing-git">Installing Git<a class="headerlink" href="#installing-git" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Mac</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block"></div>
 </div>
@@ -874,7 +826,7 @@
 <li><a href="https://brew.sh/">Git via Homebrew</a></li>
 <li><a href="https://brew.sh/">Wget via Homebrew</a></li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:1"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Linux</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Linux</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block"></div>
 </div>
@@ -884,7 +836,7 @@
 <li><code>sudo dnf install git wget</code> (Fedora)</li>
 <li><code>sudo pacman -S git wget</code> (Arch)</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="7:1"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Windows</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block"></div>
 </div>
@@ -893,32 +845,71 @@
 <li><a href="https://git-scm.com/download/win">Git for Windows</a></li>
 <li><a href="https://eternallybored.org/misc/wget/">Wget for Windows</a></li>
 </ul>
-<h3 id="2-install-git-using-pip-if-you-prefer-python-tools">2. <strong>Install Git using pip (if you prefer Python tools)</strong>:<a class="headerlink" href="#2-install-git-using-pip-if-you-prefer-python-tools" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git
+<h3 id="creating-a-project-folder-and-virtual-environment">Creating a Project Folder and Virtual Environment<a class="headerlink" href="#creating-a-project-folder-and-virtual-environment" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Create a new folder</strong> in the directory where you want your project to live. We'll name it <code>gamms</code>:
+   <div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir<span class="w"> </span>gamms
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>gamms
+</span></code></pre></div></li>
+<li><strong>Create a Python virtual environment</strong> within this folder. You can do this using <code>python</code> or <code>python3</code>, depending on your system:
+   <div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+</span></code></pre></div></li>
+</ol>
+<p>This command will create a subfolder named <code>venv</code> that contains your virtual environment files.</p>
+<ol>
+<li><strong>Activate the virtual environment</strong>:</li>
+</ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Mac/Linux</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">source</span><span class="w"> </span>venv/bin/activate
 </span></code></pre></div>
-<h3 id="3-install-wget-using-pip-if-you-prefer-python-tools">3. <strong>Install Wget using pip (if you prefer Python tools)</strong>:<a class="headerlink" href="#3-install-wget-using-pip-if-you-prefer-python-tools" title="Permanent link">&para;</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>wget
+<div class="tabbed-set tabbed-alternate" data-tabs="5:1"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>venv\Scripts\activate
 </span></code></pre></div>
-<h3 id="4-cloning-or-downloading-the-examples-directory">4. Cloning or Downloading the <code>examples</code> Directory<a class="headerlink" href="#4-cloning-or-downloading-the-examples-directory" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Install Gamms</strong> within the virtual environment:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gamms
+</span></code></pre></div></li>
+<li><strong>Verify your installation</strong>:
+<div class="language-py highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>   <span class="kn">import</span> <span class="nn">gamms</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gamms version:&quot;</span><span class="p">,</span> <span class="n">gamms</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</span></code></pre></div></li>
+</ol>
+<p>Once these steps are completed, you will have <strong>Gamms</strong> installed in a clean virtual environment. Remember to activate the virtual environment (step 3) whenever you want to work on your project.</p>
+<h2 id="wget-and-cloning-examples">Wget, and Cloning Examples<a class="headerlink" href="#wget-and-cloning-examples" title="Permanent link">&para;</a></h2>
+<h3 id="1-install-git-using-pip-if-you-prefer-python-tools">1. <strong>Install Git using pip (if you prefer Python tools)</strong>:<a class="headerlink" href="#1-install-git-using-pip-if-you-prefer-python-tools" title="Permanent link">&para;</a></h3>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git
+</span></code></pre></div>
+<h3 id="2-install-wget-using-pip-if-you-prefer-python-tools">2. <strong>Install Wget using pip (if you prefer Python tools)</strong>:<a class="headerlink" href="#2-install-wget-using-pip-if-you-prefer-python-tools" title="Permanent link">&para;</a></h3>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>wget
+</span></code></pre></div>
+<h3 id="3-cloning-or-downloading-the-examples-directory">3. Cloning or Downloading the <code>examples</code> Directory<a class="headerlink" href="#3-cloning-or-downloading-the-examples-directory" title="Permanent link">&para;</a></h3>
 <p><strong>Clone or download the <code>examples</code> directory</strong> from <a href="https://github.com/GAMMSim/gamms/tree/main/examples">GAMMSim/gamms</a>.</p>
 <h4 id="option-a-using-git">Option A: Using Git<a class="headerlink" href="#option-a-using-git" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/GAMMSim/gamms.git
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>mv<span class="w"> </span>gamms/examples<span class="w"> </span>examples
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/GAMMSim/gamms.git
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>mv<span class="w"> </span>gamms/examples<span class="w"> </span>examples
 </span></code></pre></div>
 <h4 id="option-b-using-wget-to-download-the-entire-repo-as-a-zip">Option B: Using Wget (to download the entire repo as a ZIP)<a class="headerlink" href="#option-b-using-wget-to-download-the-entire-repo-as-a-zip" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>wget<span class="w"> </span>https://github.com/GAMMSim/gamms/archive/refs/heads/main.zip
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>unzip<span class="w"> </span>main.zip
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>mv<span class="w"> </span>gamms-main/examples<span class="w"> </span>examples
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>rm<span class="w"> </span>-rf<span class="w"> </span>gamms-main<span class="w"> </span>main.zip
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>wget<span class="w"> </span>https://github.com/GAMMSim/gamms/archive/refs/heads/main.zip
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>unzip<span class="w"> </span>main.zip
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>mv<span class="w"> </span>gamms-main/examples<span class="w"> </span>examples
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>rm<span class="w"> </span>-rf<span class="w"> </span>gamms-main<span class="w"> </span>main.zip
 </span></code></pre></div>
-<h3 id="5-running-create_graphpy">5. Running <code>create_graph.py</code><a class="headerlink" href="#5-running-create_graphpy" title="Permanent link">&para;</a></h3>
+<h3 id="4-running-create_graphpy">4. Running <code>create_graph.py</code><a class="headerlink" href="#4-running-create_graphpy" title="Permanent link">&para;</a></h3>
 <h4 id="execute-the-script"><strong>Execute</strong> the script:<a class="headerlink" href="#execute-the-script" title="Permanent link">&para;</a></h4>
-<p><div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>create_graph.py
+<p><div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>python<span class="w"> </span>create_graph.py
 </span></code></pre></div>
 Verify that a <code>.pkl</code> file is successfully created. This indicates that the graph has been created properly.</p>
 <h3 id="6-creating-strategy-and-configuration-files">6. Creating Strategy and Configuration Files<a class="headerlink" href="#6-creating-strategy-and-configuration-files" title="Permanent link">&para;</a></h3>
 <h4 id="step-1-create-a-folder-named-games-in-the-root-of-your-project-directory-or-wherever-you-prefer">Step 1: <strong>Create a folder</strong> named <code>games</code> (in the root of your project directory or wherever you prefer):<a class="headerlink" href="#step-1-create-a-folder-named-games-in-the-root-of-your-project-directory-or-wherever-you-prefer" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>mkdir<span class="w"> </span>games
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>mkdir<span class="w"> </span>games
 </span></code></pre></div>
 <h4 id="step-2-inside-the-games-folder-create-three-python-files">Step 2: <strong>Inside the <code>games</code> folder</strong>, create three Python files:<a class="headerlink" href="#step-2-inside-the-games-folder-create-three-python-files" title="Permanent link">&para;</a></h4>
 <ul>
