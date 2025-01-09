@@ -42,24 +42,24 @@ Once pip is set up, use the appropriate commands below for your operating system
 
 3. **Activate the virtual environment**:
 
-=== "Mac/Linux"
-   ```sh
-   source venv/bin/activate
-   ```
-=== "Windows"
-   ```cmd
-   venv\Scripts\activate
-   ```
+   === "Mac/Linux"
+      ```sh
+      source venv/bin/activate
+      ```
+   === "Windows"
+      ```cmd
+      venv\Scripts\activate
+      ```
 
 4. **Install Gamms** within the virtual environment:
-```sh
-python -m pip install git+https://github.com/GAMMSim/gamms.git
-```
+   ```sh
+   python -m pip install git+https://github.com/GAMMSim/gamms.git
+   ```
 5. **Verify your installation**:
-```py
-   import gamms
-   print("Gamms version:", gamms.__version__)
-```
+   ```py
+      import gamms
+      print("Gamms version:", gamms.__version__)
+   ```
 
 Once these steps are completed, you will have **Gamms** installed in a clean virtual environment. Remember to activate the virtual environment (step 3) whenever you want to work on your project.
 
