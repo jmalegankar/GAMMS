@@ -111,10 +111,6 @@ class IAgentEngine(ABC):
 
     @abstractmethod
     def get_agent(self, name: str) -> IAgent:
-        pass
-
-    @abstractmethod
-    def delete_agent(self, name: str) -> None:
         """
         Retrieve an agent by its name.
 
@@ -123,6 +119,22 @@ class IAgentEngine(ABC):
 
         Returns:
             IAgent: The agent instance corresponding to the provided name.
+
+        Raises:
+            KeyError: If no agent with the specified name exists.
+        """
+        pass
+
+    @abstractmethod
+    def delete_agent(self, name: str) -> None:
+        """
+        Delete an agent by its name.
+
+        Args:
+            name (str): The unique name identifier of the agent to retrieve.
+
+        Returns:
+            None
 
         Raises:
             KeyError: If no agent with the specified name exists.
