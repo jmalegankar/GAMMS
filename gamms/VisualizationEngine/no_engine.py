@@ -13,6 +13,12 @@ class NoEngine(IVisualizationEngine):
     def set_agent_visual(self, agent_name: str, **kwargs):
         return
     
+    def add_artist(self, name:str, data: Dict[str, Any]):
+        return
+    
+    def remove_artist(self, name: str):
+        return
+
     def simulate(self):
         return
     

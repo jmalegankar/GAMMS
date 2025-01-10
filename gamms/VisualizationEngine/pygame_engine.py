@@ -8,7 +8,15 @@ from gamms.typing.sensor_engine import SensorType
 
 from typing import Dict, Any
 
-import pygame        
+import pygame
+
+def _circle_artist(ctx, data):
+    x = data['x']
+    y = data['y']
+    scale = data['scale']
+    color = data.get('color', Color.Black)
+    (x, y) = ctx.visual._graph_visual.ScalePositionToScreen((x, y))
+    pygame.draw.circle(ctx.visual._screen, color, (x,y), scale)
 
 class PygameVisualizationEngine(IVisualizationEngine):
     def __init__(self, ctx, tick_callback = None, width=1980, height=1080, simulation_time_constant=2.0):
@@ -31,6 +39,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._waiting_simulation = False
         self._simulation_time = 0
         self._will_quit = False
+        self._artists = {}
 
     @property
     def width(self):
@@ -51,6 +60,19 @@ class PygameVisualizationEngine(IVisualizationEngine):
         node = self.ctx.graph.graph.get_node(agent.current_node_id)
         self._agent_visuals[name] = (AgentVisual(name, (node.x, node.y), **kwargs))
         print(f"Successfully set agent visual for {name}")
+    
+    
+    def add_artist(self, name: str, data: Dict[str, Any]) -> None:
+        self._artists[name] = {
+            'data': data,
+            'draw': _circle_artist
+        }
+    
+    def remove_artist(self, name):
+        if name in self._artists:
+            del self._artists[name]
+        else:
+            print(f"Warning: Artist {name} not found.")
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -138,6 +160,8 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._draw_grid()
         self._graph_visual.draw_graph(self._screen)
         self.draw_agents()
+        for artist in self._artists.values():
+            artist['draw'](self.ctx, artist['data'])
         self.draw_input_overlay()
         self.draw_hud()
 
