@@ -4,7 +4,7 @@
 ## Python Requierement
 Gamms requires **Python 3.9** or later. If you already have a suitable version installed, skip to [Installation and Setup](#installation-and-setup).
 
-Otherwise, visit the official Python download page to install a compatible version for your device (Windows, Mac, or Linux): [Python]: https://www.python.org/downloads/
+Otherwise, visit the official Python download page to install a compatible version for your device (Windows, Mac, or Linux): [Python](https://www.python.org/downloads/)
 
 ## Installation and Setup
 
@@ -23,7 +23,7 @@ Once pip is set up, use the appropriate commands below for your operating system
    - `sudo pacman -S git wget` (Arch)
 === "Windows"
    - [Git for Windows](https://git-scm.com/download/win)
-   - [Wget for Windows](https://eternallybored.org/misc/wget/)
+   - [Wget for Windows](https://gnuwin32.sourceforge.net/packages/wget.htm)
 
 
 ### Creating a Project Folder and Virtual Environment
