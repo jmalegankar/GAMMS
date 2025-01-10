@@ -53,16 +53,24 @@ ctx.visual.set_graph_visual(**graph_vis_config)
 for name, config in agent_vis_config.items():
     ctx.visual.set_agent_visual(name, **config)
 
+# Special nodes
+n1 = ctx.graph.graph.get_node(0)
+n2 = ctx.graph.graph.get_node(1)
+data = {}
+data['x'] = n1.x
+data['y'] = n1.y
+data['scale'] = 10.0
+data['color'] = (0.0, 0.0, 0.0, 0.3)
 
+ctx.visual.add_artist('special_node', data)
 
-
-# turn_count = 0
-# # Rules for the game
-# def rule_terminate(ctx):
-#     if turn_count > 100:
-#         ctx.terminate()
-#         return True
-#     return False
+turn_count = 0
+# Rules for the game
+def rule_terminate(ctx):
+    global turn_count
+    turn_count += 1
+    if turn_count > 100:
+        ctx.terminate()
 
 def agent_reset(ctx):
     blue_agent_pos = {}
@@ -97,8 +105,13 @@ while not ctx.is_terminated():
 
     #valid_step(ctx)
     #agent_reset(ctx)
-    
+    if turn_count % 2 == 0:
+        data['x'] = n1.x
+        data['y'] = n1.y
+    else:
+        data['x'] = n2.x
+        data['y'] = n2.y
     ctx.visual.simulate()
 
     # ctx.save_frame()
-    # rule_terminate(ctx)
+    rule_terminate(ctx)
