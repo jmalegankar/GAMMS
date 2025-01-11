@@ -1,6 +1,6 @@
-from gamms.VisualizationEngine import Color
+from gamms.VisualizationEngine import Color, Shape
 from gamms.VisualizationEngine.Nodes.render_node import RenderNode
-from gamms.VisualizationEngine.Nodes.circle_node import CircleNode
+# from gamms.VisualizationEngine.Nodes.circle_node import CircleNode
 from gamms.context import Context
 import pygame
 
@@ -14,12 +14,22 @@ class RenderManager:
         self._render_nodes[name] = render_node
 
     def remove_render_node(self, name: str):
-        self._render_nodes.pop(name)
+        if name in self._render_nodes:
+            del self._render_nodes[name]
+        else:
+            print(f"Warning: Render node {name} not found.")
+        # self._render_nodes.pop(name)
 
     def handle_render(self):
         for render_node in self._render_nodes.values():
-            if isinstance(render_node, CircleNode):
-                self._render_circle(render_node.x, render_node.y, render_node.radius, render_node.color)
+            if 'drawer' in render_node.data:
+                drawer = render_node.drawer
+                drawer(render_node.data)
+                continue
+
+            shape = render_node.shape
+            if shape == Shape.Circle:
+                self._render_circle(render_node.x, render_node.y, render_node.data['radius'], render_node.color)
             else:
                 raise NotImplementedError("Render node not implemented")
 

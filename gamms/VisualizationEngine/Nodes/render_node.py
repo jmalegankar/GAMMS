@@ -1,37 +1,51 @@
-from gamms.VisualizationEngine import Color
+from gamms.VisualizationEngine import Color, Shape
+from typing import Dict, Any
 
 
 class RenderNode:
-    def __init__(self, x: float, y: float, layer: int = 0, color: tuple[int, int, int] = Color.Black):
-        self._x = x
-        self._y = y
-        self._layer = layer
-        self._color = color
+    def __init__(self, data: Dict[str, Any]):
+        # self._x = x
+        # self._y = y
+        # self._layer = layer
+        # self._color = color
+        self._data = data
+
+    @property
+    def data(self):
+        return self._data
 
     @property
     def x(self):
-        return self._x
+        return self._data['x']
     
-    @x.setter
-    def x(self, x):
-        self._x = x
+    # @x.setter
+    # def x(self, x):
+    #     self._x = x
 
     @property
     def y(self):
-        return self._y
+        return self._data['y']
     
-    @y.setter
-    def y(self, y):
-        self._y = y
+    # @y.setter
+    # def y(self, y):
+    #     self._y = y
 
     @property
     def layer(self):
-        return self._layer
+        return self._data['layer']
     
     @property
     def color(self):
-        return self._color
+        return self._data['color']
     
-    @color.setter
-    def color(self, color):
-        self._color = color
+    @property
+    def shape(self) -> Shape:
+        return self._data['shape']
+    
+    @property
+    def drawer(self):
+        return self._data['drawer']
+    
+    # @color.setter
+    # def color(self, color):
+    #     self._color = color
