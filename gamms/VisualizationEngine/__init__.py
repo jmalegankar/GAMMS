@@ -41,3 +41,4 @@ def lazy(fullname):
 
 from gamms.VisualizationEngine import agent_visual, graph_visual
 from gamms.VisualizationEngine import no_engine, pygame_engine
+from gamms.VisualizationEngine.Nodes.circle_node import CircleNode

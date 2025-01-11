@@ -56,13 +56,16 @@ for name, config in agent_vis_config.items():
 # Special nodes
 n1 = ctx.graph.graph.get_node(0)
 n2 = ctx.graph.graph.get_node(1)
-data = {}
-data['x'] = n1.x
-data['y'] = n1.y
-data['scale'] = 10.0
-data['color'] = (255, 0, 0)
+# data = {}
+# data['x'] = n1.x
+# data['y'] = n1.y
+# data['scale'] = 10.0
+# data['color'] = (255, 0, 0)
 
-ctx.visual.add_artist('special_node', data)
+# ctx.visual.add_artist('special_node', data)
+
+circle_node = gamms.visual.CircleNode(n1.x, n1.y, 10.0, 1, (255, 0, 0))
+ctx.visual.add_render_node('special_node', circle_node)
 
 turn_count = 0
 # Rules for the game
@@ -106,11 +109,16 @@ while not ctx.is_terminated():
     #valid_step(ctx)
     #agent_reset(ctx)
     if turn_count % 2 == 0:
-        data['x'] = n1.x
-        data['y'] = n1.y
+        # data['x'] = n1.x
+        # data['y'] = n1.y
+        circle_node.x = n1.x
+        circle_node.y = n1.y
     else:
-        data['x'] = n2.x
-        data['y'] = n2.y
+        # data['x'] = n2.x
+        # data['y'] = n2.y
+        circle_node.x = n2.x
+        circle_node.y = n2.y
+
     ctx.visual.simulate()
 
     # ctx.save_frame()
