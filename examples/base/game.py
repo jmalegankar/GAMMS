@@ -53,34 +53,16 @@ ctx.visual.set_graph_visual(**graph_vis_config)
 for name, config in agent_vis_config.items():
     ctx.visual.set_agent_visual(name, **config)
 
-
-# Example of a custom drawer
-def custom_circle_drawer(data):
-    x = data['x']
-    y = data['y']
-    color = data['color']
-    radius = data['radius']
-    (x, y) = ctx.visual._graph_visual.ScalePositionToScreen((x, y))
-    import pygame
-    pygame.draw.circle(ctx.visual._screen, color, (x, y), radius)
-
-
 # Special nodes
 n1 = ctx.graph.graph.get_node(0)
 n2 = ctx.graph.graph.get_node(1)
 data = {}
 data['x'] = n1.x
 data['y'] = n1.y
-# data['shape'] = gamms.visual.Shape.Circle
-data['radius'] = 10.0
+data['scale'] = 10.0
 data['color'] = (255, 0, 0)
-# data['drawer'] = custom_circle_drawer
-    
 
 ctx.visual.add_artist('special_node', data)
-
-# circle_node = gamms.visual.CircleNode(n1.x, n1.y, 10.0, 1, (255, 0, 0))
-# ctx.visual.add_render_node('special_node', circle_node)
 
 turn_count = 0
 # Rules for the game
@@ -126,14 +108,9 @@ while not ctx.is_terminated():
     if turn_count % 2 == 0:
         data['x'] = n1.x
         data['y'] = n1.y
-        # circle_node.x = n1.x
-        # circle_node.y = n1.y
     else:
         data['x'] = n2.x
         data['y'] = n2.y
-        # circle_node.x = n2.x
-        # circle_node.y = n2.y
-
     ctx.visual.simulate()
 
     # ctx.save_frame()

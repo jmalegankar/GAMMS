@@ -29,10 +29,11 @@ class RenderManager:
 
             shape = render_node.shape
             if shape == Shape.Circle:
-                self._render_circle(render_node.x, render_node.y, render_node.data['radius'], render_node.color)
+                RenderManager.render_circle(self.ctx, render_node.x, render_node.y, render_node.data['scale'], render_node.color)
             else:
                 raise NotImplementedError("Render node not implemented")
 
-    def _render_circle(self, x: float, y: float, radius: float, color: tuple=Color.Black):
-        (x, y) = self.ctx.visual._graph_visual.ScalePositionToScreen((x, y))
-        pygame.draw.circle(self.ctx.visual._screen, color, (x, y), radius)
+    @staticmethod
+    def render_circle(ctx: Context, x: float, y: float, radius: float, color: tuple=Color.Black):
+        (x, y) = ctx.visual._graph_visual.ScalePositionToScreen((x, y))
+        pygame.draw.circle(ctx.visual._screen, color, (x, y), radius)
