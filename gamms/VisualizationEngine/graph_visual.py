@@ -32,8 +32,6 @@ class GraphVisual:
 
     def ScalePositionToScreen(self, position: tuple[float, float]) -> tuple[float, float]:
         """Scale a coordinate value to fit within the screen."""
-        current_size = pygame.display.get_window_size()
-
         graph_center = self.GraphCenter()
         # Graph comes in the form of KM. Need to convert the KM to scale for M. One unit = 1m
         screen_scale = 111139 / 100
