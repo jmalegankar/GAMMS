@@ -1,4 +1,5 @@
-# Sensor Engine
+## Sensor Engine
+---
 
 ::: gamms.typing.ISensorEngine
     options:

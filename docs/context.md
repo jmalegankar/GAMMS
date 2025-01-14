@@ -1,6 +1,3 @@
-# GAMMS Context
----
-
 ::: gamms.typing.IContext
     options:
         show_source: false

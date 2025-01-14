@@ -1,4 +1,5 @@
-# Agent Engine
+## Agent Engine
+---
 
 ::: gamms.typing.IAgentEngine
     options:

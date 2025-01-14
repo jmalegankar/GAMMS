@@ -1,6 +1,3 @@
-# Visualization
----
-
 ::: gamms.typing.IVisualizationEngine
     options:
         show_source: false
