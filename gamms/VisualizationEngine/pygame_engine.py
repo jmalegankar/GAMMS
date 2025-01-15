@@ -1,8 +1,10 @@
 from gamms.typing import IVisualizationEngine
-from gamms.VisualizationEngine import Color, Space
+from gamms.VisualizationEngine import Color, Space, Shape
 from gamms.VisualizationEngine.camera import Camera
 from gamms.VisualizationEngine.graph_visual import GraphVisual
 from gamms.VisualizationEngine.agent_visual import AgentVisual
+from gamms.VisualizationEngine.render_manager import RenderManager
+from gamms.VisualizationEngine.Nodes.render_node import RenderNode
 from gamms.context import Context
 from gamms.typing.sensor_engine import SensorType
 
@@ -40,6 +42,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._simulation_time = 0
         self._will_quit = False
         self._artists = {}
+        self._render_manager = RenderManager(ctx)
 
     @property
     def width(self):
@@ -63,16 +66,29 @@ class PygameVisualizationEngine(IVisualizationEngine):
     
     
     def add_artist(self, name: str, data: Dict[str, Any]) -> None:
-        self._artists[name] = {
-            'data': data,
-            'draw': _circle_artist
-        }
+        if 'shape' not in data:
+            data['shape'] = Shape.Circle
+
+        render_node = RenderNode(data)
+        self._render_manager.add_render_node(name, render_node)
+        # self._artists[name] = render_node
+        # self._artists[name] = {
+        #     'data': data,
+        #     'draw': _circle_artist
+        # }
     
     def remove_artist(self, name):
-        if name in self._artists:
-            del self._artists[name]
-        else:
-            print(f"Warning: Artist {name} not found.")
+        self._render_manager.remove_render_node(name)
+        # if name in self._artists:
+        #     del self._artists[name]
+        # else:
+        #     print(f"Warning: Artist {name} not found.")
+
+    # def add_render_node(self, name: str, render_node: RenderNode) -> None:
+    #     self._render_manager.add_render_node(name, render_node)
+
+    # def remove_render_node(self, name: str) -> None:
+    #     self._render_manager.remove_render_node(name)
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -160,8 +176,9 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # self._draw_grid()
         self._graph_visual.draw_graph(self._screen)
         self.draw_agents()
-        for artist in self._artists.values():
-            artist['draw'](self.ctx, artist['data'])
+        # for artist in self._artists.values():
+        #     artist['draw'](self.ctx, artist['data'])
+        self._render_manager.handle_render()
         self.draw_input_overlay()
         self.draw_hud()
 

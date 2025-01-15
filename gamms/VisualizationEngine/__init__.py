@@ -25,6 +25,12 @@ class Space:
     Screen = 1
     Viewport = 2
 
+
+class Shape:
+    Circle = 0
+    Rectangle = 1
+
+
 import sys
 import importlib.util
 
@@ -41,3 +47,4 @@ def lazy(fullname):
 
 from gamms.VisualizationEngine import agent_visual, graph_visual
 from gamms.VisualizationEngine import no_engine, pygame_engine
+# from gamms.VisualizationEngine.Nodes.circle_node import CircleNode
