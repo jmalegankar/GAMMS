@@ -129,7 +129,6 @@ class PygameVisualizationEngine(IVisualizationEngine):
                         self._zoom = self._graph_visual.setZoom(self._zoom)
             if event.type == pygame.QUIT:
                 self._will_quit = True
-                self._input_option_result = -1
             if event.type == pygame.VIDEORESIZE:
                 self._width = event.w
                 self._height = event.h
@@ -260,7 +259,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
     def run_game_loop(self):
         clock = pygame.time.Clock()
-        while not self._will_quit:
+        while True:
             
             self.handle_input()
             self.handle_single_draw() 
@@ -306,14 +305,9 @@ class PygameVisualizationEngine(IVisualizationEngine):
             self.update()
 
             result = self._input_option_result
-            
-            if result == -1:
-                self.end_handle_human_input()
-                self.terminate()
-                return result
             if result is not None:
                 self.end_handle_human_input()
-                return result           
+                return result                
 
     def end_handle_human_input(self):
         self._waiting_user_input = False
@@ -333,7 +327,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
             
             self._agent_visuals[agent.name].start_simulation_lerp((prev_node.x, prev_node.y), (target_node.x, target_node.y), current_edge.linestring if current_edge is not None else None)
 
-        while self._waiting_simulation and not self._will_quit:
+        while self._waiting_simulation:
             self.update()
 
     def terminate(self):

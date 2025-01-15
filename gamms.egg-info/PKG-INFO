@@ -1,0 +1,7 @@
+Metadata-Version: 2.2
+Name: gamms
+Version: 0.1
+Requires-Dist: pygame
+Requires-Dist: shapely
+Requires-Dist: networkx
+Dynamic: requires-dist
