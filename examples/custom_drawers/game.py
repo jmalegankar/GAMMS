@@ -55,7 +55,7 @@ for name, config in agent_vis_config.items():
 
 
 # Example of a custom drawer
-def custom_circle_drawer(data):
+def custom_circle_drawer(ctx, data):
     gamms.visual.render_manager.RenderManager.render_circle(ctx, data['x'], data['y'], data['scale'], (0, 0, 255))
 
 # Special nodes

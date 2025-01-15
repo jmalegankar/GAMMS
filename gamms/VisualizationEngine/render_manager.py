@@ -24,7 +24,7 @@ class RenderManager:
         for render_node in self._render_nodes.values():
             if 'drawer' in render_node.data:
                 drawer = render_node.drawer
-                drawer(render_node.data)
+                drawer(self.ctx, render_node.data)
                 continue
 
             shape = render_node.shape
