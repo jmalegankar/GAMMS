@@ -1,6 +1,6 @@
 from gamms.VisualizationEngine import Color, Shape
 from gamms.VisualizationEngine.Nodes.render_node import RenderNode
-# from gamms.VisualizationEngine.Nodes.circle_node import CircleNode
+from gamms.typing.graph_engine import IGraph
 from gamms.context import Context
 import pygame
 
@@ -30,6 +30,10 @@ class RenderManager:
             shape = render_node.shape
             if shape == Shape.Circle:
                 RenderManager.render_circle(self.ctx, render_node.x, render_node.y, render_node.data['scale'], render_node.color)
+            elif shape == Shape.Graph:
+                RenderManager.render_graph(self.ctx, render_node.data['graph'])
+            elif shape == Shape.Agents:
+                pass
             else:
                 raise NotImplementedError("Render node not implemented")
 
@@ -37,3 +41,49 @@ class RenderManager:
     def render_circle(ctx: Context, x: float, y: float, radius: float, color: tuple=Color.Black):
         (x, y) = ctx.visual._graph_visual.ScalePositionToScreen((x, y))
         pygame.draw.circle(ctx.visual._screen, color, (x, y), radius)
+
+    @staticmethod
+    def render_agents(ctx: Context):
+        pass
+
+    @staticmethod
+    def render_graph(ctx: Context, graph: IGraph):
+        # x_min = min(node.x for node in graph.nodes.values())
+        # x_max = max(node.x for node in graph.nodes.values())
+        # y_min = min(node.y for node in graph.nodes.values())
+        # y_max = max(node.y for node in graph.nodes.values())
+        screen = ctx.visual._screen
+
+        for edge in graph.edges.values():
+            RenderManager._draw_edge(ctx, screen, graph, edge)
+        for node in graph.nodes.values():
+            RenderManager._draw_node(ctx, screen, node)
+
+    @staticmethod
+    def _draw_edge(ctx, screen, graph, edge):
+        """Draw an edge as a curve or straight line based on the linestring."""
+        source = graph.nodes[edge.source]
+        target = graph.nodes[edge.target]
+        
+        # If linestring is present, draw it as a curve
+        if edge.linestring:
+            #linestring[1:-1]
+            linestring = [(source.x, source.y)] + [(x, y) for (x, y) in edge.linestring.coords] + [(target.x, target.y)]
+            scaled_points = [
+                (ctx.visual._graph_visual.ScalePositionToScreen((x, y)))
+                for x, y in linestring
+            ]
+            pygame.draw.aalines(screen, (0, 0, 0), False, scaled_points, 2)
+        else:
+            # Straight line
+            source_position = (source.x, source.y)
+            target_position = (target.x, target.y)
+            (x1, y1) = ctx.visual._graph_visual.ScalePositionToScreen(source_position)
+            (x2, y2) = ctx.visual._graph_visual.ScalePositionToScreen(target_position)
+            pygame.draw.line(screen, (0, 0, 0), (int(x1), int(y1)), (int(x2), int(y2)), 2)
+
+    @staticmethod
+    def _draw_node(ctx, screen, node, color=(173, 255, 47)):
+        position = (node.x, node.y)
+        (x, y) = ctx.visual._graph_visual.ScalePositionToScreen(position)
+        pygame.draw.circle(screen, color, (int(x), int(y)), 4)  # Light greenish color

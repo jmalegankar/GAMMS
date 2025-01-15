@@ -53,6 +53,11 @@ class PygameVisualizationEngine(IVisualizationEngine):
         return self._height    
     
     def set_graph_visual(self, **kwargs):
+        data = {}
+        data['shape'] = Shape.Graph
+        data['graph'] = self.ctx.graph.graph
+        self.ctx.visual.add_artist('graph', data)
+
         self._graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
         self._graph_visual.setCamera(self._camera)
 
@@ -174,7 +179,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
         # Note: Draw in layer order of back layer -> front layer
         self._draw_grid()
-        self._graph_visual.draw_graph(self._screen)
+        # self._graph_visual.draw_graph(self._screen)
         self.draw_agents()
         # for artist in self._artists.values():
         #     artist['draw'](self.ctx, artist['data'])
@@ -199,7 +204,8 @@ class PygameVisualizationEngine(IVisualizationEngine):
         
         for key_id, node_id in self._input_options.items():
             node = self.ctx.graph.graph.get_node(node_id)
-            self._graph_visual.draw_node(self._screen, node, Color.Purple)
+            self._render_manager._draw_node(self.ctx, self._screen, node)
+            # self._graph_visual.draw_node(self._screen, node, Color.Purple)
 
             position = (node.x, node.y)
             (x, y) = self._graph_visual.ScalePositionToScreen(position)
