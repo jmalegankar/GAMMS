@@ -56,7 +56,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         data = {}
         data['shape'] = Shape.Graph
         data['graph'] = self.ctx.graph.graph
-        self.ctx.visual.add_artist('graph', data)
+        self.add_artist('graph', data)
 
         self._graph_visual = GraphVisual(self.ctx.graph.graph, kwargs['width'], kwargs['height'])
         self._graph_visual.setCamera(self._camera)
@@ -68,7 +68,11 @@ class PygameVisualizationEngine(IVisualizationEngine):
         node = self.ctx.graph.graph.get_node(agent.current_node_id)
         self._agent_visuals[name] = (AgentVisual(name, (node.x, node.y), **kwargs))
         print(f"Successfully set agent visual for {name}")
-    
+
+        data = {}
+        data['shape'] = Shape.Agent
+        data['agent_visual'] = self._agent_visuals[name]
+        self.add_artist(name, data)
     
     def add_artist(self, name: str, data: Dict[str, Any]) -> None:
         if 'shape' not in data:
@@ -180,7 +184,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         # Note: Draw in layer order of back layer -> front layer
         self._draw_grid()
         # self._graph_visual.draw_graph(self._screen)
-        self.draw_agents()
+        # self.draw_agents()
         # for artist in self._artists.values():
         #     artist['draw'](self.ctx, artist['data'])
         self._render_manager.handle_render()

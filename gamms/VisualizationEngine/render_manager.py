@@ -3,6 +3,7 @@ from gamms.VisualizationEngine.Nodes.render_node import RenderNode
 from gamms.typing.graph_engine import IGraph
 from gamms.context import Context
 import pygame
+import math
 
 
 class RenderManager:
@@ -32,8 +33,8 @@ class RenderManager:
                 RenderManager.render_circle(self.ctx, render_node.x, render_node.y, render_node.data['scale'], render_node.color)
             elif shape == Shape.Graph:
                 RenderManager.render_graph(self.ctx, render_node.data['graph'])
-            elif shape == Shape.Agents:
-                pass
+            elif shape == Shape.Agent:
+                RenderManager.render_agent(self.ctx, render_node.data)
             else:
                 raise NotImplementedError("Render node not implemented")
 
@@ -43,8 +44,33 @@ class RenderManager:
         pygame.draw.circle(ctx.visual._screen, color, (x, y), radius)
 
     @staticmethod
-    def render_agents(ctx: Context):
-        pass
+    def render_agent(ctx: Context, render_data: dict):
+        screen = ctx.visual._screen
+        agent_visual = render_data['agent_visual']
+        position = agent_visual.position
+        size = agent_visual.size
+        (scaled_x, scaled_y) = ctx.visual._graph_visual.ScalePositionToScreen(position)
+        color = agent_visual.color
+        if agent_visual.name == ctx.visual._waiting_agent_name:
+            color = Color.Magenta
+
+        # Draw each agent as a triangle at its current position
+        angle = math.radians(45)
+        point1 = (scaled_x + size * math.cos(angle), scaled_y + size * math.sin(angle))
+        point2 = (scaled_x + size * math.cos(angle + 2.5), scaled_y + size * math.sin(angle + 2.5))
+        point3 = (scaled_x + size * math.cos(angle - 2.5), scaled_y + size * math.sin(angle - 2.5))
+
+        pygame.draw.polygon(screen, color, [point1, point2, point3])
+
+    # @staticmethod
+    # def render_agents(ctx: Context):
+    #     screen = ctx.visual._screen
+    #     for agent_visual in ctx.visual._agent_visuals.values():
+    #         color = agent_visual.color
+    #         if agent_visual.name == ctx.visual._waiting_agent_name:
+    #             color = Color.Magenta
+            
+    #         RenderManager._render_agent(ctx, screen, agent_visual, color)
 
     @staticmethod
     def render_graph(ctx: Context, graph: IGraph):
