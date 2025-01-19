@@ -100,6 +100,9 @@ while not ctx.is_terminated():
         else:
             state = agent.get_state()
             node = ctx.visual.human_input(agent.name, state)
+            if node == -1:
+                ctx.terminate()
+                break
             state['action'] = node
             agent.set_state()
 

@@ -79,20 +79,20 @@ class PygameVisualizationEngine(IVisualizationEngine):
             pressed_keys = pygame.key.get_pressed()
             # Multi key Event
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_w]:
-                self._camera.x += self._camera.size / 100
-                self._camera.y += -self._camera.size / 100
+                self._camera.x += 1
+                self._camera.y += -1
                 return
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_s]:
-                self._camera.x += self._camera.size / 100
-                self._camera.y += self._camera.size / 100
+                self._camera.x += 1
+                self._camera.y += 1
                 return
             if pressed_keys[pygame.K_s] and pressed_keys[pygame.K_d]:
-                self._camera.x += -self._camera.size / 100
-                self._camera.y += self._camera.size / 100
+                self._camera.x += -1
+                self._camera.y += 1
                 return
             if pressed_keys[pygame.K_d] and pressed_keys[pygame.K_w]:
-                self._camera.x += -self._camera.size / 100
-                self._camera.y += -self._camera.size / 100
+                self._camera.x += -1
+                self._camera.y += -1
                 return
             if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_d]:
                 return
@@ -101,20 +101,20 @@ class PygameVisualizationEngine(IVisualizationEngine):
             
             # Single Input Event
             if pressed_keys[pygame.K_a]:
-                self._camera.x += self._camera.size / 100
+                self._camera.x += 1
                 self._camera.y += 0
                 return
             if pressed_keys[pygame.K_s]:
                 self._camera.x += 0
-                self._camera.y += self._camera.size / 100
+                self._camera.y += 1
                 return
             if pressed_keys[pygame.K_d]:
-                self._camera.x += -self._camera.size / 100
+                self._camera.x += -1
                 self._camera.y += 0
                 return
             if pressed_keys[pygame.K_w]:
                 self._camera.x += 0
-                self._camera.y += -self._camera.size / 100
+                self._camera.y += -1
                 return
             if event.type == pygame.MOUSEWHEEL:
                 if event.y > 0:
@@ -129,6 +129,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
                         self._zoom = self._graph_visual.setZoom(self._zoom)
             if event.type == pygame.QUIT:
                 self._will_quit = True
+                self._input_option_result = -1
             if event.type == pygame.VIDEORESIZE:
                 self._width = event.w
                 self._height = event.h
@@ -157,7 +158,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         self._screen.fill(Color.White)
 
         # Note: Draw in layer order of back layer -> front layer
-        # self._draw_grid()
+        self._draw_grid()
         self._graph_visual.draw_graph(self._screen)
         self.draw_agents()
         for artist in self._artists.values():
@@ -250,7 +251,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
         x_max = self._camera.x + self._camera.size * 4
         y_min = self._camera.y - self._camera.size_y * 4
         y_max = self._camera.y + self._camera.size_y * 4
-        step = int(self._camera.size / 100)
+        step = 1
         for x in range(int(x_min), int(x_max) + 1, step):
             self.render_line(x, y_min, x, y_max, Color.LightGray, 3 if x % 5 == 0 else 1, False)
 
@@ -259,7 +260,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
 
     def run_game_loop(self):
         clock = pygame.time.Clock()
-        while True:
+        while not self._will_quit:
             
             self.handle_input()
             self.handle_single_draw() 
@@ -305,9 +306,14 @@ class PygameVisualizationEngine(IVisualizationEngine):
             self.update()
 
             result = self._input_option_result
+            
+            if result == -1:
+                self.end_handle_human_input()
+                self.terminate()
+                return result
             if result is not None:
                 self.end_handle_human_input()
-                return result                
+                return result           
 
     def end_handle_human_input(self):
         self._waiting_user_input = False
@@ -327,7 +333,7 @@ class PygameVisualizationEngine(IVisualizationEngine):
             
             self._agent_visuals[agent.name].start_simulation_lerp((prev_node.x, prev_node.y), (target_node.x, target_node.y), current_edge.linestring if current_edge is not None else None)
 
-        while self._waiting_simulation:
+        while self._waiting_simulation and not self._will_quit:
             self.update()
 
     def terminate(self):

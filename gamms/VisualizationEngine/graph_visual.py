@@ -29,13 +29,16 @@ class GraphVisual:
     
     def setCamera(self, camera):
         self.camera = camera
-        camera.size = max(self.x_max - self.x_min, self.y_max - self.y_min)
 
     def ScalePositionToScreen(self, position: tuple[float, float]) -> tuple[float, float]:
         """Scale a coordinate value to fit within the screen."""
         graph_center = self.GraphCenter()
-        map_position = ((position[0] - graph_center[0]),(position[1] - graph_center[1]))
+        # Graph comes in the form of KM. Need to convert the KM to scale for M. One unit = 1m
+        screen_scale = 111139 / 100
+
+        map_position = (screen_scale * (position[0] - graph_center[0]),screen_scale * (position[1] - graph_center[1]))
         map_position = self.camera.world_to_screen(map_position[0] + self.camera.x, map_position[1] + self.camera.y)
+        #map_position = (map_position[0] + self.offset[0], map_position[1] + self.offset[1])
         return map_position
 
     def draw_node(self, screen, node, color=(173, 255, 47)):
@@ -48,7 +51,9 @@ class GraphVisual:
         """Draw an edge as a curve or straight line based on the linestring."""
         source = self.graph.nodes[edge.source]
         target = self.graph.nodes[edge.target]
-
+        # for x,y in edge.linestring.coords:
+        #     print("Linestring: ",x,y)
+        
         # If linestring is present, draw it as a curve
         if edge.linestring:
             #linestring[1:-1]
