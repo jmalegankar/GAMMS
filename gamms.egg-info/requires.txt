@@ -1,3 +1,0 @@
-pygame
-shapely
-networkx
